@@ -44,6 +44,7 @@ grails.project.dependency.resolution = {
 
     dependencies {
         test "org.grails:grails-datastore-test-support:1.0.2-grails-2.4"
+        runtime 'mysql:mysql-connector-java:5.1.29'
     }
 
     plugins {
@@ -57,5 +58,9 @@ grails.project.dependency.resolution = {
 
         // plugins needed at runtime but not for compilation
         runtime ":jquery:1.11.1"
+        runtime ":hibernate4:4.3.8.1"
+        //runtime ":database-migration:1.4.0"
+
+        test "org.grails.plugins:code-coverage:2.0.3-3"
     }
 }

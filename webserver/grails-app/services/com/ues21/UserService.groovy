@@ -1,7 +1,5 @@
 package com.ues21
 
-import com.ues21.users.User
-
 class UserService {
 
     public boolean validateUserLogin(User user) {

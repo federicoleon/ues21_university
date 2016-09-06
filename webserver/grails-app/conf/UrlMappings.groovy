@@ -9,5 +9,7 @@ class UrlMappings {
         }
 
         "/"(controller:"main", action:"home")
+
+        "/webserver/management/login"(controller:"management", action:"main")
     }
 }

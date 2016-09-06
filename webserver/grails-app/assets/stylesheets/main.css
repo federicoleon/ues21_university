@@ -106,6 +106,12 @@ html {
     text-decoration: none;
 }
 
+#main-container #main-body #main-menu a:visited {
+    color: #353434;
+    font-weight: bold;
+    text-decoration: none;
+}
+
 #main-container #main-body #main-menu a:first-child {
     padding-left: 0px !important;
 }
@@ -141,6 +147,12 @@ html {
 
 #main-container #main-body #main-footer a:hover {
     color: #72BE00;
+    text-decoration: none;
+}
+
+#main-container #main-body #main-footer a:visited {
+    color: #353434;
+    font-weight: bold;
     text-decoration: none;
 }
 

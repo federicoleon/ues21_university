@@ -1,7 +1,5 @@
 package com.ues21
 
-import com.ues21.users.User
-
 class ManagementController {
 
     def userService
