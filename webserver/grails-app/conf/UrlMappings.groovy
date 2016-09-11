@@ -2,16 +2,11 @@ class UrlMappings {
 
     static mappings = {
 
-        "/$controller/$action?/$id?(.$format)?"{
-            constraints {
-                // apply constraints here
-            }
-        }
+        "/"(controller: "login", action: "login")
+        "/"(controller: "login", action: "login")
 
-        "/management/main" (controller: "management") {
-            action = [ GET:"main" ]
-        }
+        "/management/logout"(controller: "login", action: "logout")
 
-        "/"(controller:"login", action:"login")
+        "/management/main"(controller: "management", action: "main")
     }
 }

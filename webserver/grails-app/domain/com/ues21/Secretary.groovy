@@ -2,8 +2,8 @@ package com.ues21
 
 import com.ues21.enums.UserTypeEnum
 
-class Director extends Person {
-
+class Secretary extends Person {
+    
     String fileNumber
     String username
     String password
@@ -19,6 +19,6 @@ class Director extends Person {
     }
 
     public String getRole() {
-        return UserTypeEnum.DIRECTOR.role()
+        return UserTypeEnum.SECRETARY.role()
     }
 }

@@ -1,0 +1,109 @@
+{
+    "university_center": {
+        "id": 1,
+        "name": "Nueva Cordoba",
+        "buildings": [
+            {
+                "id": 1,
+                "name": "Edificio central", 
+                "classrooms": [
+                    {
+                        "name": 101,
+                        "floor": 1
+                    },
+                    {"name": 102,
+                        "floor": 1
+                    },
+                    {
+                        "name": 103,
+                        "floor": 1
+                    },
+                    {
+                        "name": 104,
+                        "floor": 1
+                    },
+                    {
+                        "name": 105,
+                        "floor": 1
+                    },
+                    {
+                        "name": 201,
+                        "floor": 2
+                    },
+                    {"name": 202,
+                        "floor": 2
+                    },
+                    {
+                        "name": 203,
+                        "floor": 2
+                    },
+                    {
+                        "name": 204,
+                        "floor": 2
+                    },
+                    {
+                        "name": 205,
+                        "floor": 2
+                    },
+                    {
+                        "name": 301,
+                        "floor": 3
+                    },
+                    {"name": 302,
+                        "floor": 3
+                    },
+                    {
+                        "name": 303,
+                        "floor": 3
+                    },
+                    {
+                        "name": 304,
+                        "floor": 3
+                    },
+                    {
+                        "name": 305,
+                        "floor": 3
+                    },
+                    {
+                        "name": 401,
+                        "floor": 4
+                    },
+                    {"name": 402,
+                        "floor": 4
+                    },
+                    {
+                        "name": 403,
+                        "floor": 4
+                    },
+                    {
+                        "name": 404,
+                        "floor": 4
+                    },
+                    {
+                        "name": 405,
+                        "floor": 4
+                    },
+                    {
+                        "name": 501,
+                        "floor": 5
+                    },
+                    {"name": 502,
+                        "floor": 5
+                    },
+                    {
+                        "name": 503,
+                        "floor": 5
+                    },
+                    {
+                        "name": 504,
+                        "floor": 5
+                    },
+                    {
+                        "name": 505,
+                        "floor": 5
+                    }
+                ]
+            }
+        ]
+    }
+}

@@ -1,14 +1,16 @@
 import com.ues21.*
 import com.ues21.enums.*
+import com.ues21.utils.*
 import com.ues21.exceptions.*
 import org.codehaus.groovy.grails.web.json.JSONObject
-import com.ues21.utils.JSONUtils
+import org.codehaus.groovy.grails.web.json.JSONArray
 
 import org.codehaus.groovy.grails.web.context.ServletContextHolder
 
 class BootStrap {
 
     def grailsApplication
+    def personService
 
     def init = { servletContext ->
 
@@ -28,7 +30,8 @@ class BootStrap {
                 loadDatabaseMocks()
             }
             production {
-
+                // TODO: Remove this when we have every ABM ready for Production.
+                loadDatabaseMocks()
             }
         }
 
@@ -39,18 +42,12 @@ class BootStrap {
     }
 
     private void loadDatabaseMocks() {
-        loadIdentificationTypes()
         loadExamTypes()
+        loadClassRooms()
+        loadCathedraPeriods()
         loadCareers()
-    }
-
-    private void loadIdentificationTypes() {
-        IdentificationTypeEnum.values().each { identification ->
-            IdentificationType type = new IdentificationType()
-            type.type = identification.type()
-            type.name = identification.value()
-            type.save(flush: true, failOnError: true)
-        }
+        loadCathedras()
+        loadMockedUsers()
     }
 
     private void loadExamTypes() {
@@ -87,6 +84,8 @@ class BootStrap {
                         Subject subject = new Subject()
                         subject.name = sbj.name
                         subject.points = sbj.points
+                        subject.type = SubjectTypeEnum.REGULAR.id()
+                        subject.semester = sbj.semester[0]
                         plan.addToSubjects(subject)
                     }
                 }
@@ -101,11 +100,96 @@ class BootStrap {
         }
     }
 
+    private void loadClassRooms() {
+        def files = new File(ServletContextHolder.servletContext.getRealPath('resources/mocks/classrooms'))
+        files.eachFile { file ->
+            def json = JSONUtils.parseString(file.getText())
+            if(json) {
+                loadClassRoom(json)
+            }
+        }
+    }
+
+    private void loadClassRoom(JSONObject json) {
+        if(!json) {
+            return
+        }
+
+        def center = json.university_center
+        def buildings = center?.buildings
+        buildings?.each { b ->
+            def classrooms = b?.classrooms
+            classrooms?.each { cr ->
+                Classroom classroom = new Classroom()
+                classroom.center = center.id
+                classroom.building = b.id
+                classroom.name = cr.name
+                classroom.floor = cr.floor
+                if(classroom.validate()) {
+                    classroom.save(flush: true, failOnError: true)
+                }
+            }
+        }
+    }
+
+    private void loadCathedraPeriods() {
+        Date date = new Date()
+        int year = date[Calendar.YEAR]
+
+        CathedraPeriodEnum.values().each { period ->
+            CathedraPeriod cPeriod = new CathedraPeriod()
+            cPeriod.id = period.id()
+            cPeriod.year = year
+            cPeriod.period = period.id()
+            if(cPeriod.validate()) {
+                cPeriod.save(flush: true, failOnError: true)
+            }
+        }
+    }
+
+    private void loadCathedras() {
+        Date date = new Date()
+        int year = date[Calendar.YEAR]
+        List <Subject> subjects = Subject.list()
+        subjects?.each { subject ->
+            Cathedra cathedra = new Cathedra()
+            cathedra.subject = subject
+            
+            int floor = subject.getAcademicYear()
+            def classroom = Classroom.findByFloor(floor)
+            cathedra.classroom = classroom
+            def period = CathedraPeriod.findByPeriodAndYear(subject.getPeriod(), year)
+            cathedra.period = period
+            if(cathedra.validate()) {
+                cathedra.save(flush:true, failOnError: true)
+            }
+        }
+    }
+
+    private void loadMockedUsers() {
+        def files = new File(ServletContextHolder.servletContext.getRealPath('resources/mocks/users'))
+        files.eachFile { file ->
+            def json = JSONUtils.parseString(file.getText())
+            if(json) {
+                loadMockedUser(json)
+            }
+        }
+    }
+
+    private void loadMockedUser(JSONArray mockedUsers) {
+        if(!mockedUsers) {
+            return
+        }
+        mockedUsers.each { userData ->
+            personService.createFromGeneric(userData)
+        }
+    }
+
     private void injectValidationMethods(genericClass) {
         if(genericClass == null) {
             return
         }
-        
+
         genericClass.metaClass.checkParameter = { def condition, def msg, def code ->
             if(!condition) {
                 throw new BadRequestException(msg.toString(), code.toString())

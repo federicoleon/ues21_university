@@ -12,6 +12,7 @@
         <link rel="shortcut icon" href="${assetPath(src: 'favicon.ico')}" type="image/x-icon">
         <link rel="apple-touch-icon" href="${assetPath(src: 'apple-touch-icon.png')}">
         <link rel="apple-touch-icon" sizes="114x114" href="${assetPath(src: 'apple-touch-icon-retina.png')}">
+        <g:javascript library="jquery" plugin="jquery"/>
         <asset:stylesheet src="main.css"/>
         <asset:javascript src="main.js"/>
         <g:layoutHead/>
@@ -19,15 +20,23 @@
     <body>
         <div id="main-container">
             <div id="main-menu">
-                <g:if test="${user?.isStudent()}">
+                <g:if test="${person?.getRole() == 'student'}">
                     <g:render template="/management/student/menu"/>
                 </g:if>
-                <g:elseif test="${user?.isTeacher()}">
-                    <g:render template="/management/student/menu"/>
+                <g:elseif test="${person?.getRole() == 'teacher'}">
+                    <g:render template="/management/teacher/menu"/>
+                </g:elseif>
+                <g:elseif test="${person?.getRole() == 'secretary'}">
+                    <g:render template="/management/secretary/menu"/>
                 </g:elseif>
             </div>
             <div id="main-body">
                 <g:layoutBody/>
+            </div>
+            <div id="main-footer">
+                <div id="footer-copyright">
+                    <span>Copyright ${new Date()[Calendar.YEAR]} - Universidad Siglo 22. Todos los derechos reservados.</span>
+                </div>
             </div>
         </div>
     </body>

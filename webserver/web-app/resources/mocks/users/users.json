@@ -1,0 +1,31 @@
+[
+    {
+        "role": "secretary",
+        "username": "fedeleoncba",
+        "password": "1234567890",
+        "file_number": "33169682",
+        "person_data": {
+            "first_name": "Fede",
+            "last_name": "León",
+            "identification": {
+                "type": "DNI",
+                "number": "12345678"
+            },
+            "emails": [
+                {
+                    "address": "fedeleon.cba@gmail.com",
+                    "status": 1
+                }
+            ],
+            "phones": [
+                {
+                    "type": "celular",
+                    "area_code": 351,
+                    "number": 153583213,
+                    "status": 1,
+                    "company": "Personal"
+                }
+            ]
+        }
+    }
+]

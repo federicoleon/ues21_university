@@ -1,6 +1,6 @@
 package com.ues21
 
-class Person {
+abstract class Person {
     String firstName
     String lastName
     Identification identification
@@ -9,6 +9,10 @@ class Person {
     Date creationDate = new Date()
     Date lastUpdate = new Date()
 
+    static mapping = {
+        tablePerHierarchy false
+    }
+
     static constraints = {
         firstName nullable: false, blank: false
         lastName nullable: false, blank: false
@@ -16,4 +20,6 @@ class Person {
         creationDate nullable: false
         lastUpdate nullable: false
     }
+
+    public abstract String getRole()
 }

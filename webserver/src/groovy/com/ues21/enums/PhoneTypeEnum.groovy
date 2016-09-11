@@ -19,4 +19,11 @@ public enum PhoneTypeEnum {
     static PhoneTypeEnum byId (int id) {
         values().find { it.id == id }
     }
+
+    static PhoneTypeEnum byType(String type) {
+        if(type == null) {
+            return null
+        }
+        return values().find { it.type.equalsIgnoreCase(type.trim().toLowerCase())}
+    }
 }
