@@ -1,0 +1,332 @@
+{
+  "name": "Ingeniería en Software",
+  "plans": [
+    {
+      "name": 2008,
+      "subjects": [
+        {
+          "name": "Desarrollo Emprendedor",
+          "points": 10,
+          "semester": [
+            1
+          ]
+        },
+        {
+          "name": "Herramientas Matemáticas I - Álgebra",
+          "points": 10,
+          "semester": [
+            1
+          ]
+        },
+        {
+          "name": "Herramientas Matemáticas II - Análisis",
+          "points": 10,
+          "semester": [
+            1
+          ]
+        },
+        {
+          "name": "Idioma Extranjero I",
+          "points": 10,
+          "semester": [
+            1
+          ]
+        },
+        {
+          "name": "Introducción a los Algoritmos",
+          "points": 10,
+          "semester": [
+            1
+          ]
+        },
+        {
+          "name": "Sistemas de Información",
+          "points": 10,
+          "semester": [
+            1
+          ]
+        },
+        {
+          "name": "Arquitectura del Computador",
+          "points": 10,
+          "semester": [
+            2
+          ]
+        },
+        {
+          "name": "Cálculo Avanzado",
+          "points": 10,
+          "semester": [
+            2
+          ]
+        },
+        {
+          "name": "Idioma Extranjero II",
+          "points": 10,
+          "semester": [
+            2
+          ]
+        },
+        {
+          "name": "Matemática Discreta",
+          "points": 10,
+          "semester": [
+            2
+          ]
+        },
+        {
+          "name": "Programación Orientada a Objetos",
+          "points": 10,
+          "semester": [
+            2
+          ]
+        },
+        {
+          "name": "Algoritmos y Estructuras de Datos I",
+          "points": 10,
+          "semester": [
+            3
+          ]
+        },
+        {
+          "name": "Grupo y Liderazgo",
+          "points": 10,
+          "semester": [
+            3
+          ]
+        },
+        {
+          "name": "Herramientas Matemáticas III - Estadística I",
+          "points": 10,
+          "semester": [
+            3
+          ]
+        },
+        {
+          "name": "Idioma Extranjero III",
+          "points": 10,
+          "semester": [
+            3
+          ]
+        },
+        {
+          "name": "Lógica Simbólica",
+          "points": 10,
+          "semester": [
+            3
+          ]
+        },
+        {
+          "name": "Taller de Algoritmos y Estructura de Datos I",
+          "points": 10,
+          "semester": [
+            3
+          ]
+        },
+        {
+          "name": "Algoritmos y Estructura de Datos II",
+          "points": 10,
+          "semester": [
+            4
+          ]
+        },
+        {
+          "name": "Idioma Extranjero IV",
+          "points": 10,
+          "semester": [
+            4
+          ]
+        },
+        {
+          "name": "Paradigmas de Programación",
+          "points": 10,
+          "semester": [
+            4
+          ]
+        },
+        {
+          "name": "Principios de Economía",
+          "points": 10,
+          "semester": [
+            4
+          ]
+        },
+        {
+          "name": "Taller de Algoritmos y Estructura de Datos II",
+          "points": 10,
+          "semester": [
+            4
+          ]
+        },
+        {
+          "name": "Analisis y Diseño de Software",
+          "points": 10,
+          "semester": [
+            5
+          ]
+        },
+        {
+          "name": "Herramientas Matemáticas V - Estadística II",
+          "points": 10,
+          "semester": [
+            5
+          ]
+        },
+        {
+          "name": "Idioma Extranjero V",
+          "points": 10,
+          "semester": [
+            5
+          ]
+        },
+        {
+          "name": "Sistemas Operativos",
+          "points": 10,
+          "semester": [
+            5
+          ]
+        },
+        {
+          "name": "Taller De Análisis y Diseño De Software",
+          "points": 10,
+          "semester": [
+            5
+          ]
+        },
+        {
+          "name": "Ética y Deontología Profesional",
+          "points": 10,
+          "semester": [
+            5
+          ]
+        },
+        {
+          "name": "Bases de Datos I",
+          "points": 10,
+          "semester": [
+            6
+          ]
+        },
+        {
+          "name": "Idioma Extranjero VI",
+          "points": 10,
+          "semester": [
+            6
+          ]
+        },
+        {
+          "name": "Ingenieria de Software",
+          "points": 10,
+          "semester": [
+            6
+          ]
+        },
+        {
+          "name": "Seminario de Práctica de Analista en Software",
+          "points": 10,
+          "semester": [
+            6
+          ]
+        },
+        {
+          "name": "Taller de Ingenieria de Software",
+          "points": 10,
+          "semester": [
+            6
+          ]
+        },
+        {
+          "name": "Calidad de Software",
+          "points": 10,
+          "semester": [
+            7
+          ]
+        },
+        {
+          "name": "Seguridad Informatica",
+          "points": 10,
+          "semester": [
+            7
+          ]
+        },
+        {
+          "name": "Sistemas Operativos II (Redes)",
+          "points": 10,
+          "semester": [
+            7
+          ]
+        },
+        {
+          "name": "Administración de Proyectos",
+          "points": 10,
+          "semester": [
+            8
+          ]
+        },
+        {
+          "name": "Base de Datos II",
+          "points": 10,
+          "semester": [
+            8
+          ]
+        },
+        {
+          "name": "Construccion De Software",
+          "points": 10,
+          "semester": [
+            8
+          ]
+        },
+        {
+          "name": "Herramientas Matemáticas VI - Modelos de Simulación",
+          "points": 10,
+          "semester": [
+            8
+          ]
+        },
+        {
+          "name": "Taller de Construccion de Software",
+          "points": 10,
+          "semester": [
+            8
+          ]
+        },
+        {
+          "name": "Emprendimientos Universitarios",
+          "points": 10,
+          "semester": [
+            9
+          ]
+        },
+        {
+          "name": "Metodos Formales",
+          "points": 10,
+          "semester": [
+            9
+          ]
+        },
+        {
+          "name": "Práctica Profesional de Ingenieria en Software",
+          "points": 10,
+          "semester": [
+            9
+          ]
+        },
+        {
+          "name": "Práctica Solidaria",
+          "points": 10,
+          "semester": [
+            9
+          ]
+        },
+        {
+          "name": "Seminario Final de Ingenieria en Software",
+          "points": 10,
+          "semester": [
+            10
+          ]
+        }
+      ]
+    }
+  ]
+}

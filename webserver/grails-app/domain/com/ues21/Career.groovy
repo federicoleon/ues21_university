@@ -4,4 +4,8 @@ class Career {
 
     String name
     static hasMany = [plans: CareerPlan]
+
+    public String toString() {
+        return name
+    }
 }

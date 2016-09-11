@@ -1,5 +1,21 @@
 body, input, select, textarea {
-    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-family: Arial,Helvetica,"Nimbus Sans L",sans-serif;
+}
+
+input, select, textarea {
+    border: 1px solid #CDCDCD;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+h1, h2, h3, h4, h5 {
+    padding: 2px;
+    margin: 0px;
+}
+
+h1 {
+    font-size: 18px;
 }
 
 html {
@@ -8,181 +24,158 @@ html {
     font-size: 13px;
 }
 
+ol, ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+fieldset {
+    border: 0;
+    margin: 0;
+    padding: 0
+}
+
+.info, .success, .warning, .error, .validation {
+    border: 1px solid;
+    margin: 0px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: center;
+}
+.info {
+    color: #00529B;
+    background-color: #BDE5F8;
+    background-image: url('info.png');
+}
+.success {
+    color: #4F8A10;
+    background-color: #DFF2BF;
+    background-image:url('success.png');
+}
+.warning {
+    color: #9F6000;
+    background-color: #FEEFB3;
+    background-image: url('warning.png');
+}
+.error {
+    color: #D8000C;
+    background-color: #FFBABA;
+    background-image: url('error.png');
+}
+
+.button {
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 13px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+
+.button.btn-green {
+    background-color: #4CAF50;
+}
+
+.button.btn-blue {
+    background-color: #008CBA;
+}
+
+.button.btn-red {
+    background-color: #f44336;
+}
+
+.button.btn-gray {
+    background-color: #e7e7e7; color: black;
+}
+
+.button.btn-black {
+    background-color: #555555;
+}
+
 #main-container {
+    min-width: 365px;
+    border: 1px solid #CACACA;
     margin-left: auto;
     margin-right: auto;
     width: 80%;
+    background-color: #F9F9F9;
+    position: relative;
 }
 
-#main-container #main-header {
-    height: 110px;
-    display: block;
+#main-container #login-container {
+    margin: 0 auto;
+    width: 330px;
+    padding: 10px;
+}
+
+#main-container #login-container h1 {
+    color: #4CAF50;
+}
+
+#main-container #login-container input {
+    border: 1px solid #DBDBDB;
+    border-radius: 0px;
+    height: 25px;
+    width: 93%;
+    font-size: 13px;
+    color: #585858;
+    padding: 10px;
+}
+
+#main-container #login-container input[type=submit] {
+    color: #FFFFFF;
+    font-weight: bold;
+    height: 35px;
+    width: 100%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+#main-container #main-menu {
     overflow: hidden;
 }
 
-#main-container #main-header #logo {
-    width: 30%;
-    float: left;
+#main-container #main-menu ul li a {
     display: block;
-}
-
-#main-container #main-header #logo #logo-title {
-    display: block;
-    font-size: 25px;
+    text-align: center;
+    text-decoration: none;
     text-transform: uppercase;
+    font-size: 13px;
+    float:left;
+    margin-right: 10px;
 }
 
-#main-container #main-header #logo #logo-subtitle {
-    display: block;
-    font-size: 35px;
+#main-container #main-menu a:link {
+    color: #353434;
     font-weight: bold;
+    text-decoration: none;
+}
+
+#main-container #main-menu a:hover {
     color: #72BE00;
-    text-transform: uppercase;
-}
-
-#main-container #main-header #logo #logo-description {
-    display: block;
-    font-size: 14px;
-}
-
-#main-container #main-header #header-content {
-    width: 70%;
-    float:right;
-    display: block;
+    text-decoration: none;
 }
 
 #main-container #main-body {
-    background-color: #F9F9F9;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
+    margin-top: 10px;
     padding: 10px;
+    padding-top: 0px;
 }
 
-#main-container #main-body #main-menu {
-    
-}
-
-#main-container #main-body #main-menu ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-}
-
-#main-container #main-body #main-menu ul li {
-    float: left;
-    border-right: 1px solid #BBBBBB;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
-#main-container #main-body #main-menu ul li:first-child {
+.form-row {
+    padding-top: 5px;
+    padding-bottom: 5px;
     padding-left: 0px;
+    padding-right: 0px;
 }
 
-#main-container #main-body #main-menu ul li:last-child {
-    border-right: none;
+.form-row label {
+    margin: 0 5px 0 0;
+    font-weight: 700;
+    position: relative;
+    padding: 7px 11px 5px 0;
 }
-
-#main-container #main-body #main-menu ul li a {
-    display: block;
-    text-align: center;
-    text-decoration: none;
-    text-transform: uppercase;
-    font-size: 20px;
-}
-
-#main-container #main-body #main-menu a:link {
-    color: #353434;
-    font-weight: bold;
-    text-decoration: none;
-}
-
-#main-container #main-body #main-menu a:hover {
-    color: #72BE00;
-    text-decoration: none;
-}
-
-#main-container #main-body #main-menu a:visited {
-    color: #353434;
-    font-weight: bold;
-    text-decoration: none;
-}
-
-#main-container #main-body #main-menu a:first-child {
-    padding-left: 0px !important;
-}
-
-#main-container #main-body #main-footer {
-    
-}
-
-#main-container #main-body #main-footer ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-}
-
-#main-container #main-body #main-footer ul li {
-    float: left;
-}
-
-#main-container #main-body #main-footer ul li a {
-    display: block;
-    text-align: center;
-    padding: 10px;
-    text-decoration: none;
-    text-transform: uppercase;
-}
-
-#main-container #main-body #main-footer a:link {
-    color: #353434;
-    font-weight: bold;
-    text-decoration: none;
-}
-
-#main-container #main-body #main-footer a:hover {
-    color: #72BE00;
-    text-decoration: none;
-}
-
-#main-container #main-body #main-footer a:visited {
-    color: #353434;
-    font-weight: bold;
-    text-decoration: none;
-}
-
-#main-container #main-body #main-footer ul li a:first-child {
-    padding-left: 0px !important;
-}
-
-#main-container #main-body #main-footer #footer-legals {
-}
-
-#main-container #main-body #main-footer #footer-legals #footer-copyright {
-}
-
-#main-container #main-body #main-footer #footer-legals .policy {
-    margin-left: 10px;
-}
-
-hr {
-   display: block;
-   position: relative;
-   padding: 0;
-   margin: 5px auto;
-   height: 0;
-   width: 100%;
-   max-height: 0;
-   font-size: 1px;
-   line-height: 0;
-   clear: both;
-   border: none;
-   border-top: 1px solid #aaaaaa;
-   border-bottom: 1px solid #ffffff;
-}
-

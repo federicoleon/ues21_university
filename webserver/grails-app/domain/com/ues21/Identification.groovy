@@ -6,8 +6,10 @@ class Identification {
     IdentificationType type
     String number
 
+    static belongsTo = [student: Student]
+
     static constraints = {
-        type nullable: false, inList: IdentificationTypeEnum.values()*.value()
-        number blank: false, nullable: false, minSize: 13, maxSize: 20
+        type nullable: false, blank: false
+        number blank: false, nullable: false, minSize: 8, maxSize: 8
     }
 }

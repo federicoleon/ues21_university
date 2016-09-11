@@ -8,7 +8,6 @@
 		<span class="required-indicator">*</span>
 	</label>
 	<g:textField name="firstName" required="" value="${studentInstance?.firstName}"/>
-
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: studentInstance, field: 'lastName', 'error')} required">
@@ -21,30 +20,29 @@
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: studentInstance, field: 'identification', 'error')} required">
-	<label for="identification">
-		<g:message code="student.identification.label" default="Identification" />
+	<label for="identificationType">
+		<g:message code="student.identification.type.label" default="Identification" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:select id="identification" name="identification.id" from="${com.ues21.Identification.list()}" optionKey="id" required="" value="${studentInstance?.identification?.id}" class="many-to-one"/>
-
+	<g:select id="identificationType" name="identificationType" from="${identification_types}" optionKey="type" required="" value="${studentInstance?.identification?.type}"/>
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: studentInstance, field: 'creationDate', 'error')} required">
-	<label for="creationDate">
-		<g:message code="student.creationDate.label" default="Creation Date" />
+<div class="fieldcontain ${hasErrors(bean: studentInstance, field: 'identification', 'error')} required">
+	<label for="identificationNumber">
+		<g:message code="student.identification.number.label" default="Identification" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:datePicker name="creationDate" precision="day"  value="${studentInstance?.creationDate}"  />
 
+	<g:textField name="identificationNumber" required="" value="${studentInstance?.identification?.id}"/>
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: studentInstance, field: 'lastUpdate', 'error')} required">
-	<label for="lastUpdate">
-		<g:message code="student.lastUpdate.label" default="Last Update" />
+<div class="fieldcontain required">
+	<label for="phone">
+		<g:message code="student.phone.label" default="Phone" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:datePicker name="lastUpdate" precision="day"  value="${studentInstance?.lastUpdate}"  />
 
+	<g:textField name="phoneNumber" required="" value=""/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: studentInstance, field: 'fileNumber', 'error')} required">
@@ -56,22 +54,20 @@
 
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: studentInstance, field: 'username', 'error')} required">
-	<label for="username">
-		<g:message code="student.username.label" default="Username" />
+<div class="fieldcontain ${hasErrors(bean: studentInstance, field: 'email', 'error')} required">
+	<label for="email">
+		<g:message code="student.email.label" default="E-mail" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:textField name="username" required="" value="${studentInstance?.username}"/>
-
+	<g:textField name="email" required="" value=""/>
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: studentInstance, field: 'password', 'error')} required">
-	<label for="password">
-		<g:message code="student.password.label" default="Password" />
+<div class="fieldcontain ${hasErrors(bean: studentInstance, field: 'emailConfirmation', 'error')} required">
+	<label for="emailConfirmation">
+		<g:message code="student.email.label" default="E-mail" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:textField name="password" required="" value="${studentInstance?.password}"/>
-
+	<g:textField name="emailConfirmation" required="" value=""/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: studentInstance, field: 'careers', 'error')} ">
@@ -79,25 +75,7 @@
 		<g:message code="student.careers.label" default="Careers" />
 		
 	</label>
-	<g:select name="careers" from="${com.ues21.Career.list()}" multiple="multiple" optionKey="id" size="5" value="${studentInstance?.careers*.id}" class="many-to-many"/>
-
-</div>
-
-<div class="fieldcontain ${hasErrors(bean: studentInstance, field: 'emails', 'error')} ">
-	<label for="emails">
-		<g:message code="student.emails.label" default="Emails" />
-		
-	</label>
-	<g:select name="emails" from="${com.ues21.Email.list()}" multiple="multiple" optionKey="id" size="5" value="${studentInstance?.emails*.id}" class="many-to-many"/>
-
-</div>
-
-<div class="fieldcontain ${hasErrors(bean: studentInstance, field: 'phones', 'error')} ">
-	<label for="phones">
-		<g:message code="student.phones.label" default="Phones" />
-		
-	</label>
-	<g:select name="phones" from="${com.ues21.Phone.list()}" multiple="multiple" optionKey="id" size="5" value="${studentInstance?.phones*.id}" class="many-to-many"/>
+	<g:select name="careers" from="${careers}" multiple="multiple" optionKey="id" size="5" value="${careers}"/>
 
 </div>
 

@@ -42,9 +42,26 @@ grails.project.dependency.resolution = {
         mavenCentral()
     }
 
+    def gebVersion = "0.13.0"
+    def seleniumVersion = "2.25.0"
+
     dependencies {
-        test "org.grails:grails-datastore-test-support:1.0.2-grails-2.4"
+        /*compile ("org.seleniumhq.selenium:selenium-java:2.5.0") {
+            excludes "xercesImpl"
+            excludes "httpclient"
+        }
+        */
+
         runtime 'mysql:mysql-connector-java:5.1.29'
+
+        test "org.grails:grails-datastore-test-support:1.0.2-grails-2.4"
+        test "org.spockframework:spock-grails-support:0.7-groovy-2.0"
+        test "org.gebish:geb-spock:$gebVersion"
+        test "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
+        test "org.seleniumhq.selenium:selenium-chrome-driver:$seleniumVersion"
+        test("org.seleniumhq.selenium:selenium-htmlunit-driver:$seleniumVersion") {
+            exclude "xml-apis"
+        }
     }
 
     plugins {
@@ -55,12 +72,16 @@ grails.project.dependency.resolution = {
         compile ":scaffolding:2.1.2"
         compile ':cache:1.1.8'
         compile ":asset-pipeline:2.1.5"
+        compile "org.grails.plugins:geb:$gebVersion"
 
         // plugins needed at runtime but not for compilation
         runtime ":jquery:1.11.1"
         runtime ":hibernate4:4.3.8.1"
-        //runtime ":database-migration:1.4.0"
 
+        //test ":selenium:0.8"
         test "org.grails.plugins:code-coverage:2.0.3-3"
+        test(":spock:0.7") {
+            exclude "spock-grails-support"
+        }
     }
 }

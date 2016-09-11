@@ -21,4 +21,8 @@ public enum IdentificationTypeEnum {
     static IdentificationTypeEnum byId (int id) {
         values().find { it.id == id }
     }
+
+    static IdentificationTypeEnum byType (String type) {
+        values().find { it.type == type }
+    }
 }

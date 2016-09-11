@@ -1,7 +1,7 @@
 class AuthenticationFilters {
     
     def filters = {
-        checkAuthentication(controller: "management", action: "*") {
+        checkAuthentication(controller: "login", invert: true) {
             before = {
                 if (!session.user && !actionName.equals("login")) {
                     redirect(action: "login")

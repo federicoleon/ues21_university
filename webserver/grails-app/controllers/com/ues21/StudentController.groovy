@@ -1,9 +1,8 @@
 package com.ues21
 
-
-
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
+import com.ues21.enums.*
 
 @Transactional(readOnly = true)
 class StudentController {
@@ -20,29 +19,46 @@ class StudentController {
     }
 
     def create() {
-        respond new Student(params)
+        def model = [
+            identification_types: IdentificationType.list(),
+            careers: Career.list()
+        ]
     }
 
     @Transactional
-    def save(Student studentInstance) {
-        if (studentInstance == null) {
-            notFound()
+    def save() {
+        Student student = new Student()
+
+        bindData(student, params)
+
+        IdentificationType idType = IdentificationType.findByType(params.identificationType)
+        
+        println "======================================================================"
+        println params.dump()
+        println "======================================================================"
+
+        Identification identification = new Identification()
+        identification.type = idType
+        identification.number = params.identificationNumber
+
+        student.identification = identification
+
+        student.username = params.identificationNumber.toString()
+        student.password = params.identificationNumber.toString()
+
+        if(!student.validate()) {
+            respond student.errors, view:'create'
             return
         }
 
-        if (studentInstance.hasErrors()) {
-            respond studentInstance.errors, view:'create'
-            return
-        }
-
-        studentInstance.save flush:true
+        student.save(flush: true, failOnError: true)
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'student.label', default: 'Student'), studentInstance.id])
-                redirect studentInstance
+                flash.message = message(code: 'default.created.message', args: [message(code: 'student.label', default: 'Student'), student.id])
+                redirect student
             }
-            '*' { respond studentInstance, [status: CREATED] }
+            '*' { respond student, [status: CREATED] }
         }
     }
 

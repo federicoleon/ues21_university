@@ -8,8 +8,10 @@ class UrlMappings {
             }
         }
 
-        "/"(controller:"main", action:"home")
+        "/management/main" (controller: "management") {
+            action = [ GET:"main" ]
+        }
 
-        "/webserver/management/login"(controller:"management", action:"main")
+        "/"(controller:"login", action:"login")
     }
 }

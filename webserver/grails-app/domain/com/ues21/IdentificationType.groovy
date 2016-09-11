@@ -4,4 +4,8 @@ class IdentificationType {
 
     String type
     String name
+
+    public String toString() {
+        return name
+    }
 }
