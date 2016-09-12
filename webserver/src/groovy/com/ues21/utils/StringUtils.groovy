@@ -7,6 +7,7 @@ class StringUtils {
     private static final String MD5 = "MD5"
     
     public static String getMD5(String s) {
+        if(!s) { return "" }
         return MessageDigest.getInstance(MD5).digest(s.bytes).encodeHex().toString()
     }
 }

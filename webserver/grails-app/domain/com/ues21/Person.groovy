@@ -1,6 +1,7 @@
 package com.ues21
 
-abstract class Person {
+abstract class Person implements Serializable {
+    
     String firstName
     String lastName
     Identification identification

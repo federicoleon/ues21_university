@@ -2,7 +2,7 @@ package com.ues21
 
 import com.ues21.enums.UserTypeEnum
 
-class Student extends Person {
+class Student extends Person implements Serializable {
 
     String fileNumber
     String username
@@ -22,5 +22,9 @@ class Student extends Person {
 
     public String getRole() {
         return UserTypeEnum.STUDENT.role()
+    }
+
+    public String getFullName() {
+        return lastName.toUpperCase() + ", " + firstName.toUpperCase()
     }
 }

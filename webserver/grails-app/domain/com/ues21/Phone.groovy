@@ -2,7 +2,7 @@ package com.ues21
 
 import com.ues21.enums.PhoneTypeEnum
 
-class Phone {
+class Phone implements Serializable {
 
     Integer type
     Integer areaCode
@@ -13,8 +13,8 @@ class Phone {
 
     static constraints = {
         type nullable: false, inList: PhoneTypeEnum.values()*.id()
-        areaCode nullable: false
-        number nullable: false
+        areaCode nullable: false, blank: false
+        number nullable: false, blank: false
         company nullable: true, blank: true
     }
 }

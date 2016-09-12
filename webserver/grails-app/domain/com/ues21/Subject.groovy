@@ -7,6 +7,10 @@ class Subject {
     int type
     int semester
 
+    static mapping = {
+        name title: "asc"
+    }
+
     static hasMany = [correlatives: Subject]
 
     public int getAcademicYear() {

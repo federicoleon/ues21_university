@@ -2,8 +2,8 @@ package com.ues21
 
 import com.ues21.enums.UserTypeEnum
 
-class Secretary extends Person {
-    
+class Secretary extends Person implements Serializable {
+
     String fileNumber
     String username
     String password

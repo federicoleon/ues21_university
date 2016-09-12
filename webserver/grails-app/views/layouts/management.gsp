@@ -20,13 +20,13 @@
     <body>
         <div id="main-container">
             <div id="main-menu">
-                <g:if test="${person?.getRole() == 'student'}">
+                <g:if test="${session.person?.getRole() == 'student'}">
                     <g:render template="/management/student/menu"/>
                 </g:if>
-                <g:elseif test="${person?.getRole() == 'teacher'}">
+                <g:elseif test="${session.person?.getRole() == 'teacher'}">
                     <g:render template="/management/teacher/menu"/>
                 </g:elseif>
-                <g:elseif test="${person?.getRole() == 'secretary'}">
+                <g:elseif test="${session.person?.getRole() == 'secretary'}">
                     <g:render template="/management/secretary/menu"/>
                 </g:elseif>
             </div>

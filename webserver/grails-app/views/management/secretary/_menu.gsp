@@ -5,14 +5,14 @@
         <li><g:link controller="management" action="main">Principal</g:link></li>
         <li><a href="#"><i class="icon-home"></i>Alumnos</a>
             <ul class="sub-menu">
-                <li><a href="#">Registrar nuevo alumno</a></li>
+                <li><g:link controller="secretary" action="registerStudent">Registrar nuevo alumno</g:link></li>
                 <li><a href="#">Actualizar alumno</a></li>
             </ul>
         </li>
         <li><a href="#"><i class="icon-home"></i>Gestión académica</a>
             <ul class="sub-menu">
-                <li><a href="#">Consultar cátedras</a></li>
-                <li><a href="#">Inscribir a comisión</a></li>
+                <li><g:link controller="secretary" action="browseCathedras">Consultar cátedras</g:link></li>
+                <li><g:link controller="secretary" action="registerStudentCathedra">Inscribir a comisión</g:link></li>
                 <li><a href="#">Inscribir a mesa de examen</a></li>
             </ul>
         </li>

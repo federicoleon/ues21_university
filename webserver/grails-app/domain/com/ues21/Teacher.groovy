@@ -2,7 +2,7 @@ package com.ues21
 
 import com.ues21.enums.UserTypeEnum
 
-class Teacher extends Person {
+class Teacher extends Person implements Serializable {
 
     String fileNumber
     String username

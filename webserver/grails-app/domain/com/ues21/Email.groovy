@@ -1,9 +1,9 @@
 package com.ues21
 
-class Email {
+class Email implements Serializable {
 
     String address
-    int status
+    int status = 1
 
     static belongsTo = [person: Person]
 }

@@ -99,7 +99,7 @@ class PersonService {
 
         p.fileNumber = data.file_number
         p.username = data.username
-        p.password = data.password
+        p.password = StringUtils.getMD5(data.password)
 
         if(p.validate()) {
             p.save(flush: true, failOnError: true)
@@ -110,6 +110,7 @@ class PersonService {
 
     public Person validateAuthentication(String username, String password) {
         Person result
+        password = StringUtils.getMD5(password)
         result = Student.findByUsernameAndPassword(username, password)
         if(result) { return result }
 
