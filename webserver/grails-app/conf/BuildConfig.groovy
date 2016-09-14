@@ -9,11 +9,12 @@ grails.project.target.level = 1.6
 grails.project.source.level = 1.6
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
 
-if (Environment.getCurrent() == Environment.DEVELOPMENT) {
-    grails.project.fork = [
-        run: [maxMemory: 1024, minMemory: 64, debug: false, maxPerm: 256]
-    ]
-}
+grails.project.fork = [
+   test: [maxMemory: 1024, minMemory: 64, debug: false, maxPerm: 256, daemon:true],
+   run: [maxMemory: 1024, minMemory: 64, debug: false, maxPerm: 256],
+   war: [maxMemory: 1024, minMemory: 64, debug: false, maxPerm: 256],
+   console: [maxMemory: 1024, minMemory: 64, debug: false, maxPerm: 256]
+]
 
 grails.project.dependency.resolver = "maven" // or ivy
 grails.project.dependency.resolution = {

@@ -20,8 +20,11 @@
                     <td>Inscripción</td>
                 </tr>
                 <g:each in="${cathedras}" var="cathedra">
-                    <tr colspan="4">
-                        <td>${cathedra}</td>
+                    <tr>
+                        <td>${cathedra.subject_name}</td>
+                        <td>${cathedra.center}</td>
+                        <td>${cathedra.building}</td>
+                        <td>${cathedra.classroom}</td>
                         <td><g:checkBox name="cathedraS" value="${cathedra.id}" checked="false"/></td>
                     </tr>
                 </g:each>

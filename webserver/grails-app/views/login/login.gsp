@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta name="layout" content="management"/>
-        <title>Acceso a autogestión</title>
+        <title>Acceso a Autogestión</title>
     </head>
     <body>
         <div id="login-container">

@@ -2,7 +2,7 @@ package com.ues21
 
 class CathedrasXStudents {
 
-    int status
+    int status = 1
     Cathedra cathedra
     Student student
 }

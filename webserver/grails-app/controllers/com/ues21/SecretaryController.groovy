@@ -4,15 +4,21 @@ import com.ues21.utils.*
 import com.ues21.enums.*
 
 class SecretaryController {
+
+    def cathedraService
+    def studentService
+    def careerService
     
     def registerStudentFlow = {
         
         init {
             action {
-                def model = [
+                Map model = [
+                    careers: careerService.getCareersModelView(),
                     idTypes: IdentificationTypeEnum.values(),
                     phoneTypes: PhoneTypeEnum.values()
                 ]
+                return model
             }
             on("success").to("landing")
         }
@@ -20,20 +26,20 @@ class SecretaryController {
         landing {
             on("register") {
                 Student student = new Student()
-                flow.student = student
 
                 student.firstName = params.firstName
                 student.lastName = params.lastName
 
+                String idNumber = params.idNumber.toString().trim()
                 Identification identification = new Identification()
-                identification.type = params.idType
-                identification.number = params.idNumber
+                identification.type = params.int("idType")
+                identification.number = idNumber
                 identification.person = student
                 student.identification = identification
 
-                student.fileNumber = params.idNumber
+                student.fileNumber = idNumber
                 student.username = params.idNumber.toString().trim()
-                student.password = StringUtils.getMD5(params.idNumber.toString().trim())
+                student.password = StringUtils.getMD5(idNumber)
 
                 Phone phone = new Phone()
                 phone.type = params.int("phoneType")
@@ -47,33 +53,50 @@ class SecretaryController {
                 email.person = student
                 student.addToEmails(email)
 
+                flow.student = student
+
                 if(!student.validate()) {
                     return error()
                 }
-            }.to("processRegistration")
+
+                // Register current student:
+                student.save(flush: true, failOnError: true)
+            }.to("processCareerRegistration")
         }
 
-        processRegistration() {
+        processCareerRegistration {
             action {
-                def student = flow.student
-                try {
-                    if(student.validate()) {
-                        student.save(flush: true, failOnError: true)
-                        return success()
-                    }else{
-                        return error()
-                    }
-                } catch(Exception e) {
-                    e.printStackTrace()
+                // Check for received careerId:
+                Long careerId = params.long("carreerId")
+                if(!careerId) {
                     return error()
                 }
-                def model = [student: student]
+
+                Career career = Career.get(careerId)
+                if(!career) {
+                    return error()
+                }
+
+                // If we have the career, then save the relation between student and career:
+                CareersXStudent cxs = new CareersXStudent()
+                cxs.career = career
+                cxs.student = flow.student
+                if(cxs.validate()) {
+                    cxs.save(flush: true, failOnError: true)
+                }else{
+                    return error()
+                }
             }
             on("success").to("success")
             on("error").to("error")
         }
 
         error {
+            return [
+                student: flow.student,
+                error: true,
+                error_msg: "Ha ocurrido un error al intentar registrar el usuario"
+            ]
         }
 
         success {
@@ -84,15 +107,7 @@ class SecretaryController {
         init {
             action {
                 def cathedras = Cathedra.list()
-                def result = []
-                cathedras?.each { cathedra ->
-                    result << [
-                        subject_name: cathedra.subject.name,
-                        classroom: cathedra.classroom.name,
-                        center: UniversityCentersEnum.byId(cathedra.classroom.center).type(),
-                        building: UniversityBuildingsEnum.byId(cathedra.classroom.building).type()
-                    ]
-                }
+                def result = cathedraService.getCathedraModelView(cathedras)
                 def model = [cathedras: result]
             }
             on("success").to("landing")
@@ -107,9 +122,12 @@ class SecretaryController {
         init {
             action {
                 def students = Student.list()
-                def cathedras = Cathedra.list()
+                def cathedras = studentService.getAvailableCathedras()
 
-                def model = [students: students, cathedras: cathedras]
+                def model = [
+                    students: students, 
+                    cathedras: cathedraService.getCathedraModelView(cathedras)
+                ]
             }
             on("success").to("landing")
         }

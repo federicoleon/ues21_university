@@ -139,11 +139,6 @@ fieldset {
     margin:0 auto;
 }
 
-
-
-
-
-
 nav{
     display:block;
 }
@@ -297,8 +292,8 @@ nav{
 
 @media (max-width: 480px) {}
 
-
 @media (max-width: 320px) {}
+
 
 #main-container #main-body {
     margin-top: 10px;
@@ -324,7 +319,31 @@ nav{
 }
 
 #teacher-list-cathedras-form-container table {
+    padding: 0;
+    margin: 0;
+    border: 1px solid #000000;
+    border-bottom: 0px;
+    border-spacing: 0px;
+    border-collapse: separate;
+}
 
+#teacher-list-cathedras-form-container table tr {
+}
+
+#teacher-list-cathedras-form-container table tr:first-child {
+    text-align: center;
+    font-weight: bold;
+}
+
+#teacher-list-cathedras-form-container table td {
+    padding: 3px;
+    margin: 0;
+    border-right: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+}
+
+#teacher-list-cathedras-form-container table td:last-child {
+    border-right: 0px;
 }
 
 #main-container #main-footer {

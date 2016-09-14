@@ -8,6 +8,11 @@ import com.ues21.gebPages.*
 @Stepwise
 class LoginSpec extends GebReportingSpec {
 
+    def cleanupSpec(){
+       // Wait one second between tests.
+       Thread.sleep(1000)
+    }
+
     def "check login page"() {
         given: "Go to the Login page"
             to LoginPage
@@ -15,7 +20,7 @@ class LoginSpec extends GebReportingSpec {
         expect: "Check elements in the screen"
             at LoginPage
 
-            title == "Ingreso a Autogestión"
+            title == "Acceso a Autogestión"
             
             form.username == ""
             form.password == ""
@@ -30,14 +35,14 @@ class LoginSpec extends GebReportingSpec {
             to LoginPage
 
         when: "Try to access with wrong data"
-            form.username = "somemockeduser"
+            form.username = "wronguser"
             form.password = "thisIsThePass"
             loginButton.click()
 
         then: "Check there is a login error on the screen"
             at LoginPage
 
-            title == "Ingreso a Autogestión"
+            title == "Acceso a Autogestión"
 
             form.username == ""
             form.password == ""
@@ -50,8 +55,8 @@ class LoginSpec extends GebReportingSpec {
             to LoginPage
 
         when: "Try to access with wrong data"
-            form.username = "fede"
-            form.password = "leon"
+            form.username = "fedeleoncba"
+            form.password = "fede"
             loginButton.click()
 
         then: "Check we are inside management panel"

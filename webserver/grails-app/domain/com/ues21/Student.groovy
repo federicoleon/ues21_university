@@ -11,8 +11,6 @@ class Student extends Person implements Serializable {
     static mapping = {
         tablePerHierarchy false
     }
-    
-    static hasMany = [careers: Career]
 
     static constraints = {
         fileNumber nullable: false, blank: false

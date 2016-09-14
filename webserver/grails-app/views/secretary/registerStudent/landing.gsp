@@ -8,6 +8,10 @@
         <div id="form-container">
             <h1>Registrar nuevo alumno</h1>
             <g:form name="registerStudent">
+                <label>Carrera:</label>
+                <g:select name="carreerId" from="${careers}" optionKey="id" optionValue="name"/>
+                <br>
+                
                 <label>Nombres:</label>
                 <g:textField name="firstName" value="${student?.firstName}"/><br/>
                 <g:hasErrors bean="${student}" field="firstName">
