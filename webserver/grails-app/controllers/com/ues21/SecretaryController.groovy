@@ -2,6 +2,7 @@ package com.ues21
 
 import com.ues21.utils.*
 import com.ues21.enums.*
+import com.ues21.constants.Constants
 
 class SecretaryController {
 
@@ -230,6 +231,15 @@ class SecretaryController {
                 Long studentId = flow.studentId
                 Long careerId = flow.careerId
                 if(!careerId || !studentId) {
+                    flow.errorMessage = "Datos inválidos. Se ha notificado al administrador."
+                    return error()
+                }
+
+                List currentRegisteredCathedras = cathedraService.getActiveCathedrasFromStudent(studentId)
+                int currentSubjects = currentRegisteredCathedras.size()
+                if(currentSubjects >= Constants.MAX_CONCURRENT_SUBJECTS) {
+                    flow.errorClass = Constants.CLASS_INFO
+                    flow.errorMessage = "El alumno ya se encuentra inscripto en "+currentSubjects+" materias y es el máximo permitido."
                     return error()
                 }
 
@@ -241,6 +251,7 @@ class SecretaryController {
                 return [careers: flow.careers, students: flow.students, cathedras: flow.cathedras]
             }
             on("success").to("landing")
+            on("error").to("error")
         }
 
         processRegistration {
@@ -257,19 +268,58 @@ class SecretaryController {
                     return error()
                 }
 
+                if(ids.size() > Constants.MAX_CONCURRENT_SUBJECTS) {
+                    flow.errorMessage = "No se puede inscribir en más de " + Constants.MAX_CONCURRENT_SUBJECTS + " materias."
+                    flow.errorClass = Constants.CLASS_ERROR
+                    return error()
+                }
+
                 Long studentId = flow.studentId
 
-                boolean result = cathedraService.registerStudentInCathedras(studentId, ids, session.person.id)
+                List currentRegisteredCathedras = cathedraService.getActiveCathedrasFromStudent(studentId)
+
+                int currentSubjects = currentRegisteredCathedras.size()
+                int totalSubjects = currentSubjects + ids.size()
+                int remainingSubjects = Constants.MAX_CONCURRENT_SUBJECTS - currentSubjects
+
+                if(totalSubjects > Constants.MAX_CONCURRENT_SUBJECTS) {
+                    flow.errorMessage = "El alumno ya se encuentra inscripto en "+currentSubjects+" materias. Sólo se puede inscribir en  "+remainingSubjects+" más."
+                    flow.errorClass = Constants.CLASS_ERROR
+                    return error()
+                }
+
+                boolean result = cathedraService.registerStudentInCathedras(studentId, ids)
                 if(!result) {
+                    flow.errorMessage = "Ocurrió un error al intentar procesar la inscripción a cursado. Reintente más tarde"
+                    flow.errorClass = Constants.CLASS_ERROR
                     return error()
                 }
             }
             on("success").to("confirmation")
-            on("error").to("landing")
+            on("error").to("error")
         }
 
         confirmation {
 
+        }
+
+        error {
+            action {
+
+                def model = [
+                    careers: flow.careers,
+                    students: flow.students,
+                    cathedras: flow.cathedras,
+                    errorMessage: flow.errorMessage,
+                    errorClass: flow.errorClass
+                ]
+
+                flow.errorMessage = null
+                flow.errorClass = null
+
+                return model
+            }
+            on("success").to("landing")
         }
     }
 
@@ -278,7 +328,7 @@ class SecretaryController {
             action {
                 def careers = careerService.getCareersModelView()
                 flow.careers = careers
-                return [careers: flow.careers, students: [], registrations: []]
+                return [careers: flow.careers, students: [], cathedras: []]
             }
             on("success").to("landing")
         }
@@ -306,7 +356,7 @@ class SecretaryController {
                     students = null
                 }
                 flow.students = students
-                return [careers: flow.careers, students: flow.students, registrations: []]
+                return [careers: flow.careers, students: flow.students, cathedras: []]
             }
             on("success").to("landing")
         }
@@ -314,8 +364,63 @@ class SecretaryController {
         searchRegistrations {
             action {
                 Long studentId = flow.studentId
-                List registrations = cathedraService.getCathedraRegistrations(studentId)
-                return [careers: flow.careers, students: flow.students, registrations: registrations]
+                List cathedras = cathedraService.getActiveCathedrasFromStudent(studentId)
+                List result = cathedraService.getCathedrasModelView(cathedras)
+                if(!result) {
+                    result = null
+                }
+                return [careers: flow.careers, students: flow.students, cathedras: result]
+            }
+            on("success").to("landing")
+        }
+    }
+
+    def browseAbsencesFlow = {
+        init {
+            action {
+                def careers = careerService.getCareersModelView()
+                flow.careers = careers
+                return [careers: flow.careers, students: [], absences: []]
+            }
+            on("success").to("landing")
+        }
+
+        landing {
+            on("findCathedras") {
+                Long careerId = params.long("careerId")
+                flow.careerId = careerId
+            }.to("searchStudents")
+
+            on("findAbsences") {
+                Long studentId = params.long("studentId")
+                flow.studentId = studentId
+            }.to("searchAbsences")
+        }
+
+        searchStudents {
+            action {
+                Long careerId = flow.careerId
+                if(!careerId) {
+                    return error()
+                }
+                def students = careerService.getStudentsFromCareerMV(careerId)
+                if(!students) {
+                    students = null
+                }
+                flow.students = students
+                return [careers: flow.careers, students: flow.students, absences: []]
+            }
+            on("success").to("landing")
+        }
+
+        searchAbsences {
+            action {
+                Long studentId = flow.studentId
+                Map absences = cathedraService.getCurrentAbsencesForStudentMV(studentId)
+                if(!absences) {
+                    absences = null
+                }
+                return [careers: flow.careers, students: flow.students, absences: absences]
             }
             on("success").to("landing")
         }

@@ -1,6 +1,7 @@
 package com.ues21
 
 import com.ues21.enums.*
+import com.ues21.utils.*
 
 import grails.transaction.Transactional
 
@@ -10,7 +11,7 @@ class CathedraService {
     def careerService
     def studentService
 
-    public List getCathedraRegistrations(Long studentId) {
+    public List<Cathedra> getActiveCathedrasFromStudent(Long studentId) {
         List result = []
         if(!studentId) {
             return result
@@ -21,7 +22,10 @@ class CathedraService {
             return result
         }
 
-        def cathedrasXStudent = CathedrasXStudents.findByStudentAndStatus(student, 1)
+        def cathedrasXStudent = CathedrasXStudents.withCriteria {
+            eq("student", student)
+            eq("status", 1)
+        }
 
         List<Cathedra> cathedras = []
         cathedrasXStudent.each { registration ->
@@ -29,7 +33,7 @@ class CathedraService {
                 cathedras << registration.cathedra
             }
         }
-        return getCathedrasModelView(cathedras)
+        return cathedras
     }
     
     public List getCathedrasModelView(List<Cathedra> cathedras) {
@@ -83,8 +87,8 @@ class CathedraService {
         return result
     }
 
-    public boolean registerStudentInCathedras(Long studentId, List<Long> idsCathedras, Long registrantId) {
-        if(!studentId || !idsCathedras || !registrantId) {
+    public boolean registerStudentInCathedras(Long studentId, List<Long> idsCathedras) {
+        if(!studentId || !idsCathedras) {
             return false
         }
 
@@ -99,25 +103,67 @@ class CathedraService {
         }
 
         cathedras.each { cathedra ->
-            try {
-                CathedrasXStudents cxe = new CathedrasXStudents()
-                cxe.cathedra = cathedra
-                cxe.student = student
-                
-                Person person = Person.get(registrantId)
-                if(!person) {
-                    return false
-                }
-
-                cxe.taskExecutor = person
-                if(!cxe.validate()) {
-                    return false
-                }
-                cxe.save(flush: true, failOnError: true)
-            } catch(Exception e) {
+            CathedrasXStudents cxe = new CathedrasXStudents()
+            cxe.cathedra = cathedra
+            cxe.student = student
+            if(!cxe.validate()) {
                 return false
             }
+            cxe.save(flush: true, failOnError: true)
         }
         return true
+    }
+
+    public List<Absence> getCurrentAbsencesForStudent(Long studentId) {
+        List<Absence> result = []
+        if(!studentId) {
+            return result
+        }
+
+        Student student = Student.get(studentId)
+        if(!student) {
+            return result
+        }
+
+        def currentCathedras = CathedrasXStudents.withCriteria {
+            eq("student", student)
+            eq("status", 1)
+        }
+
+        if(!currentCathedras) {
+            return result
+        }
+
+        currentCathedras.each { cathedraXStudent ->
+            def absences = Absence.withCriteria {
+                eq("cathedraXStudent", cathedraXStudent)
+            }
+            absences?.each { Absence absence ->
+                result << absence
+            }
+        }
+
+        return result
+    }
+
+    public Map getCurrentAbsencesForStudentMV(Long studentId) {
+        
+        Map result = [:]
+
+        List<Absence> absences = getCurrentAbsencesForStudent(studentId)
+        
+        absences?.each { absence ->
+            String subjectName = absence.cathedraXStudent.cathedra.subject.name
+            int maxPermitted = absence.cathedraXStudent.cathedra.maxAbsences
+            if(!result.containsKey(subjectName)) {
+                result[subjectName] = [
+                    name: subjectName,
+                    max_permitted: maxPermitted,
+                    absences: []
+                ]
+            }
+            result[subjectName].absences << DateUtils.getOnlyDateMV(absence.date)
+        }
+        return result
     }
 }

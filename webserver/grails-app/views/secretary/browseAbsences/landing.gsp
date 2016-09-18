@@ -21,41 +21,43 @@
                     <g:form name="studentSelector">
                         <label for="studentId">Alumno:</label>
                         <g:select name="studentId" from="${students}" optionKey="id" optionValue="full_name"/>
-                        <g:submitButton name="findRegistrations" class="button btn-blue" value="Buscar inscripciones" />
+                        <g:submitButton name="findAbsences" class="button btn-blue" value="Buscar inasistencias" />
                     </g:form>
                 </div>
             </g:if>
-            
             <g:if test="${students == null}">
                 <div class="info">
-                    <span>No se encontraron alumnos registrados en la carrera seleccionada.</span>
+                    <span>No se encontraron alumnos registrados en la carrera seleccionada</span>
                 </div>
             </g:if>
 
-            <g:if test="${cathedras}">
-                <div id="cathedras-displayer">
+            <g:if test="${absences}">
+                <div id="absences-displayer">
                     <table>
                         <tr class="tbl-title">
                             <td>Materia</td>
-                            <td>Sede</td>
-                            <td>Edificio</td>
-                            <td>Aula</td>
+                            <td>Inasistencias</td>
+                            <td>Máximo permitido</td>
+                            <td>Fecha</td>
                         </tr>
-                        <g:each in="${cathedras}" var="cathedra" status="i">
+                        <g:each in="${absences}" var="absence" status="i">
                             <tr class="${(i%2 == 0) ? 'row-low' : 'row-high'}">
-                                <td class="c-left">${cathedra.subject_name}</td>
-                                <td>${cathedra.center}</td>
-                                <td>${cathedra.building}</td>
-                                <td>${cathedra.classroom}</td>
+                                <td class="c-left">${absence.key}</td>
+                                <td>${absence.value.absences.size()}</td>
+                                <td>${absence.value.max_permitted}</td>
+                                <td>
+                                    <g:each in="${absence.value.absences}" var="aux" status="j">
+                                        ${aux}<br>
+                                    </g:each>
+                                </td>
                             </tr>
                         </g:each>
                     </table>
                 </div>
             </g:if>
-            
-            <g:if test="${cathedras == null}">
-                <div class="info">
-                    <span>El alumno seleccionado no se encuentra inscripto en ninguna comisión.</span>
+            <g:if test="${absences == null}">
+                <div class="success">
+                    <span>El alumno seleccionado no tiene inasistencias registradas.</span>
                 </div>
             </g:if>
             

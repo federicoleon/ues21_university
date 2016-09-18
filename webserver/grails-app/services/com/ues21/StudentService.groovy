@@ -15,6 +15,30 @@ class StudentService extends PersonService {
         return super.createFromGeneric(data)
     }
 
+    public List<Subject> getOnGoingSubjectsForStudent(Long studentId) {
+        List<Subject> result = []
+        if(!studentId) {
+            return result
+        }
+
+        Student student = Student.get(studentId)
+        if(!student) {
+            return result
+        }
+
+        def cathedrasXStudent = CathedrasXStudents.withCriteria {
+            eq("student", student)
+            eq("status", 1)
+        }
+        cathedrasXStudent?.each { cxe ->
+            Subject s = cxe.cathedra?.subject
+            if(s) {
+                result << s
+            }
+        }
+        return result
+    }
+
     public List<Subject> getAvailableSubjectsForStudent(Long careerId, Long studentId) {
         List <Subject> result = []
         
@@ -22,8 +46,10 @@ class StudentService extends PersonService {
         
         def approvedSubjects = getApprovedSubjectsForStudent(studentId)
 
+        def onGoingSubjects = getOnGoingSubjectsForStudent(studentId)
+
         allSubjects.each { subject ->
-            boolean canRegister = subjectService.canRegisterForSubject(subject, approvedSubjects)
+            boolean canRegister = subjectService.canRegisterForSubject(subject, approvedSubjects, onGoingSubjects)
             if(canRegister) {
                 result << subject
             }

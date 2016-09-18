@@ -27,7 +27,13 @@
             </g:if>
             <g:if test="${students == null}">
                 <div class="info">
-                    <span>No se encontraron alumnos registrados en la carrera seleccionada</span>
+                    <span>No se encontraron alumnos registrados en la carrera seleccionada.</span>
+                </div>
+            </g:if>
+
+            <g:if test="${errorMessage}">
+                <div class="event-message-container ${errorClass ? $errorClass : 'error'}">
+                    <span>${errorMessage}</span>
                 </div>
             </g:if>
 

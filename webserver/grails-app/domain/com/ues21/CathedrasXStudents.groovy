@@ -6,12 +6,10 @@ class CathedrasXStudents implements Serializable {
     Cathedra cathedra
     Student student
     Date registrationDate = new Date()
-    Person taskExecutor
 
     static constraints = {
-        cathedra nullable: false
+        cathedra(nullable: false, unique: ["status", "student"])
         student nullable: false
         registrationDate nullable: false
-        taskExecutor nullable: false
     }
 }

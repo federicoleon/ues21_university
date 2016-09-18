@@ -41,9 +41,14 @@ class SubjectService {
         return result
     }
 
-    public boolean canRegisterForSubject(Subject subject, List<Subject> approvedSubjects) {
+    public boolean canRegisterForSubject(Subject subject, List<Subject> approvedSubjects, List<Subject> onGoingSubjects) {
         // If subject is null, then return false
         if(!subject) {
+            return false
+        }
+
+        // If student is actually registered in this subject, return false.
+        if(onGoingSubjects?.contains(subject)) {
             return false
         }
 

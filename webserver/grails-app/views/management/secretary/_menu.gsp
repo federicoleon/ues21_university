@@ -12,12 +12,6 @@
 
         <li><a href="#"><i class="icon-home"></i>Gestión académica</a>
             <ul class="sub-menu">
-                <li><a href="#"><i class="icon-home"></i>Materias</a>
-                    <ul class="sub-menu">
-                        <li><g:link controller="secretary" action="browseCathedras">Consultar comisiones</g:link></li>
-                        <li><g:link controller="secretary" action="browseCorrelatives">Consultar correlativas</g:link></li>
-                    </ul>
-                </li>
                 <li><a href="#"><i class="icon-home"></i>Inscripciones</a>
                     <ul class="sub-menu">
                         <li><g:link controller="secretary" action="studentCathedraRegistration">A cursado</g:link></li>
@@ -37,10 +31,13 @@
                                 <li><a href="#">A mesa de examen</a></li>
                             </ul>
                         </li>
-                        <li><a href="#">Inasistencias</a></li>
+
+                        <li><li><g:link controller="secretary" action="browseAbsences">Inasistencias</g:link></li></li>
                         <li><a href="#">Exámenes</a></li>
                     </ul>
                 </li>
+                <li><g:link controller="secretary" action="browseCathedras">Comisiones</g:link></li>
+                <li><g:link controller="secretary" action="browseCorrelatives">Correlativas</g:link></li>
             </ul>
         </li>
 
