@@ -1,6 +1,6 @@
 package com.ues21
 
-class CathedraPeriod {
+class CathedraPeriod implements Serializable {
     
     int year
     /**

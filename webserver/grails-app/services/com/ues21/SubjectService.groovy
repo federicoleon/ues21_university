@@ -52,7 +52,7 @@ class SubjectService {
             return true
         }
 
-        // If there is at least one correlative for there are no approved subjects, return false
+        // If there is at least one correlative but there are no approved subjects, return false
         if(!approvedSubjects) {
             return false
         }

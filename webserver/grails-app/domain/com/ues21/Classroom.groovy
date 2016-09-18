@@ -1,6 +1,6 @@
 package com.ues21
 
-class Classroom {
+class Classroom implements Serializable {
     String name
     Integer center
     Integer building

@@ -1,6 +1,6 @@
 package com.ues21
 
-class Subject {
+class Subject implements Serializable {
 
     Long id
     String name

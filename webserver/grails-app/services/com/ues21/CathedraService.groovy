@@ -9,8 +9,30 @@ class CathedraService {
 
     def careerService
     def studentService
+
+    public List getCathedraRegistrations(Long studentId) {
+        List result = []
+        if(!studentId) {
+            return result
+        }
+
+        Student student = Student.get(studentId)
+        if(!student) {
+            return result
+        }
+
+        def cathedrasXStudent = CathedrasXStudents.findByStudentAndStatus(student, 1)
+
+        List<Cathedra> cathedras = []
+        cathedrasXStudent.each { registration ->
+            if(registration.cathedra) {
+                cathedras << registration.cathedra
+            }
+        }
+        return getCathedrasModelView(cathedras)
+    }
     
-    public List getCathedraModelView(List<Cathedra> cathedras) {
+    public List getCathedrasModelView(List<Cathedra> cathedras) {
         List result = []
         cathedras?.each { cathedra ->
             result << [
@@ -61,23 +83,18 @@ class CathedraService {
         return result
     }
 
-    public boolean processRegistrationInCathedras(Long studentId, List<Long> cathedraIds) {
-        if(!studentId || !cathedraIds) {
+    public boolean registerStudentInCathedras(Long studentId, List<Long> idsCathedras, Long registrantId) {
+        if(!studentId || !idsCathedras || !registrantId) {
             return false
         }
 
         Student student = Student.get(studentId)
         if(!student) {
-            return error()
-        }
-
-        List cathedras = Cathedra.getAll(cathedraIds)
-        if(!cathedras) {
             return false
         }
 
-        Person person = Person.get(session.person.id)
-        if(!person) {
+        List cathedras = Cathedra.getAll(idsCathedras)
+        if(!cathedras) {
             return false
         }
 
@@ -86,6 +103,12 @@ class CathedraService {
                 CathedrasXStudents cxe = new CathedrasXStudents()
                 cxe.cathedra = cathedra
                 cxe.student = student
+                
+                Person person = Person.get(registrantId)
+                if(!person) {
+                    return false
+                }
+
                 cxe.taskExecutor = person
                 if(!cxe.validate()) {
                     return false
@@ -95,7 +118,6 @@ class CathedraService {
                 return false
             }
         }
-
         return true
     }
 }

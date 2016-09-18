@@ -2,7 +2,7 @@ package com.ues21
 
 import com.ues21.enums.ExamStatusEnum
 
-class ExamXStudent {
+class ExamXStudent implements Serializable {
 
     Date date = new Date()
     Student student

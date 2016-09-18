@@ -181,12 +181,16 @@ class BootStrap {
         subjects?.each { subject ->
             Cathedra cathedra = new Cathedra()
             cathedra.subject = subject
+            cathedra.name = "A"
+            cathedra.maxAbsences = 10
             
             int floor = subject.getAcademicYear()
             def classroom = Classroom.findByFloor(floor)
             cathedra.classroom = classroom
+
             def period = CathedraPeriod.findByPeriodAndYear(subject.getPeriod(), year)
             cathedra.period = period
+            
             if(cathedra.validate()) {
                 cathedra.save(flush:true, failOnError: true)
             }

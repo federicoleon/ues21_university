@@ -1,6 +1,6 @@
 package com.ues21
 
-class CathedrasXStudents {
+class CathedrasXStudents implements Serializable {
 
     int status = 1
     Cathedra cathedra

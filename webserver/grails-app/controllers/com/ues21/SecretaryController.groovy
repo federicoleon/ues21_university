@@ -128,7 +128,7 @@ class SecretaryController {
                 if(!cathedras) {
                     return error()
                 }
-                def cathedrasMV = cathedraService.getCathedraModelView(cathedras)
+                def cathedrasMV = cathedraService.getCathedrasModelView(cathedras)
                 
                 def careers = careerService.listAllCareers()
                 return [careers: careers, cathedras: cathedrasMV]
@@ -185,8 +185,9 @@ class SecretaryController {
     def studentCathedraRegistrationFlow = {
         init {
             action {
-                def careers = careerService.listAllCareers()
-                return [careers: careers, students: []]
+                def careers = careerService.getCareersModelView()
+                flow.careers = careers
+                return [careers: flow.careers, students: []]
             }
             on("success").to("landing")
         }
@@ -204,8 +205,8 @@ class SecretaryController {
 
             on("confirmRegistration") {
                 List selectedCathedras = params.list('cat_selection')
-                flow.selectedCathedras = selectedCathedras
-            }.to("validateRegistration")
+                flow.cathedrasSelection = selectedCathedras
+            }.to("processRegistration")
         }
 
         searchStudents {
@@ -215,8 +216,11 @@ class SecretaryController {
                     return error()
                 }
                 def students = careerService.getStudentsFromCareerMV(careerId)
-                def careers = careerService.getCareersModelView()
-                return [careers: careers, students: students]
+                if(!students) {
+                    students = null
+                }
+                flow.students = students
+                return [careers: flow.careers, students: flow.students]
             }
             on("success").to("landing")
         }
@@ -228,50 +232,92 @@ class SecretaryController {
                 if(!careerId || !studentId) {
                     return error()
                 }
-                List students = careerService.getStudentsFromCareerMV(careerId)
-                List careers = careerService.getCareersModelView()
-                List cathedras = cathedraService.getAvailableCathedrasForStudent(careerId, studentId)
-                List cathedrasMV = cathedraService.getCathedraModelView(cathedras)
-                return [careers: careers, students: students, cathedras: cathedrasMV]
+
+                if(!flow.cathedras) {
+                    List cathedras = cathedraService.getAvailableCathedrasForStudent(careerId, studentId)
+                    flow.cathedras = cathedraService.getCathedrasModelView(cathedras)
+                }
+                
+                return [careers: flow.careers, students: flow.students, cathedras: flow.cathedras]
             }
             on("success").to("landing")
         }
 
-        validateRegistration {
+        processRegistration {
             action {
-                Long studentId = flow.studentId
-
-                List selection = flow.selectedCathedras
-
-                List<Long> cathedraIDs
+                List cathedras = flow.cathedrasSelection
+                List<Long> ids
                 try {
-                    cathedraIDs = selection.collect {
-                        it as Long
-                    }
+                    ids = cathedras.collect {it as Long}
                 } catch(Exception e) {
                     return error()
                 }
                 
-                if(!cathedraIDs) {
+                if(!ids) {
                     return error()
                 }
 
-                //boolean result = cathedraService.processRegistrationInCathedras(studentId, cathedraIDs)
-                def result = true
+                Long studentId = flow.studentId
+
+                boolean result = cathedraService.registerStudentInCathedras(studentId, ids, session.person.id)
                 if(!result) {
                     return error()
                 }
             }
-            on("error").to("error")
             on("success").to("confirmation")
-        }
-
-        error {
-
+            on("error").to("landing")
         }
 
         confirmation {
 
+        }
+    }
+
+    def browseCourseRegistrationFlow = {
+        init {
+            action {
+                def careers = careerService.getCareersModelView()
+                flow.careers = careers
+                return [careers: flow.careers, students: [], registrations: []]
+            }
+            on("success").to("landing")
+        }
+
+        landing {
+            on("findCathedras") {
+                Long careerId = params.long("careerId")
+                flow.careerId = careerId
+            }.to("searchStudents")
+
+            on("findRegistrations") {
+                Long studentId = params.long("studentId")
+                flow.studentId = studentId
+            }.to("searchRegistrations")
+        }
+
+        searchStudents {
+            action {
+                Long careerId = flow.careerId
+                if(!careerId) {
+                    return error()
+                }
+                def students = careerService.getStudentsFromCareerMV(careerId)
+                if(!students) {
+                    students = null
+                }
+                flow.students = students
+                return [careers: flow.careers, students: flow.students, registrations: []]
+            }
+            on("success").to("landing")
+        }
+
+        searchRegistrations {
+            action {
+                Long studentId = flow.studentId
+                List registrations = cathedraService.getCathedraRegistrations(studentId)
+                return [careers: flow.careers, students: flow.students, registrations: registrations]
+            }
+            on("success").to("landing")
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.ues21
 
-class ExamXCathedra {
+class ExamXCathedra implements Serializable {
     
     Cathedra cathedra
     Exam exam

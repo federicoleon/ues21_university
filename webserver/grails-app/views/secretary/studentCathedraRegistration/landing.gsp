@@ -25,6 +25,11 @@
                     </g:form>
                 </div>
             </g:if>
+            <g:if test="${students == null}">
+                <div class="info">
+                    <span>No se encontraron alumnos registrados en la carrera seleccionada</span>
+                </div>
+            </g:if>
 
             <g:if test="${cathedras}">
                 <div id="cathedra-displayer">

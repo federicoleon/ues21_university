@@ -1,7 +1,7 @@
 
 package com.ues21
 
-class User {
+class User implements Serializable {
     String profile
     String username
     String password

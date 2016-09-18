@@ -31,7 +31,12 @@
             <ul class="sub-menu">
                 <li><a href="#">Semestre</a>
                     <ul>
-                        <li><a href="#">Inscripción</a></li>
+                        <li><a href="#">Inscripción</a>
+                            <ul class="sub-menu">
+                                <li><g:link controller="secretary" action="browseCourseRegistration">A cursado</g:link></li>
+                                <li><a href="#">A mesa de examen</a></li>
+                            </ul>
+                        </li>
                         <li><a href="#">Inasistencias</a></li>
                         <li><a href="#">Exámenes</a></li>
                     </ul>

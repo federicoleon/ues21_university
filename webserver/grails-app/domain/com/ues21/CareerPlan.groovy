@@ -1,6 +1,6 @@
 package com.ues21
 
-class CareerPlan {
+class CareerPlan implements Serializable {
 
     String name
     int status = 1
