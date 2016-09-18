@@ -6,6 +6,9 @@ import com.ues21.utils.*
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.codehaus.groovy.grails.web.json.JSONArray
 
+import grails.transaction.Transactional
+
+@Transactional
 class PersonService {
 
     public boolean isValidDataForCreation(JSONObject data) {

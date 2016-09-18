@@ -2,13 +2,15 @@ package com.ues21
 
 class Subject {
 
+    Long id
     String name
     int points
     int type
     int semester
 
     static mapping = {
-        name title: "asc"
+        id generator: 'assigned'
+        name semester: "asc"
     }
 
     static hasMany = [correlatives: Subject]
@@ -36,5 +38,20 @@ class Subject {
         }else{
             return 2
         }
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if(!other || !(other instanceof Subject)) {
+            return false
+        }
+        return this.id == ((Subject) other).id
+    }
+
+    public boolean equals(Subject other) {
+        if(!other) {
+            return false
+        }
+        return this.id == other.id
     }
 }

@@ -62,7 +62,7 @@
                 <label>Número de teléfono:</label>
                 <g:textField name="phoneNumber"/><br/>
 
-                <g:submitButton name="register" class="ch-btn" value="Registrar" />
+                <g:submitButton name="register" class="button btn-green" value="Registrar" />
             </g:form>
         </div>
     </body>

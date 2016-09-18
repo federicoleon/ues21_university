@@ -30,17 +30,15 @@ environments {
             properties {
                 validationQuery = "SELECT 1"
                 testOnBorrow = true
-                testOnReturn = true
                 testWhileIdle = true
-                maxActive = 40
-                maxIdle = 10
+                testOnReturn = false
+                maxActive = 50
+                maxIdle = 25
                 minIdle = 5
-                initialSize = 10
+                initialSize = 5
                 minEvictableIdleTimeMillis = 1800000
                 timeBetweenEvictionRunsMillis = 1800000
                 maxWait = 10000
-                removeAbandoned = true
-                logAbandoned = true
             }
         }
     }

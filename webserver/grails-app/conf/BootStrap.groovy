@@ -30,7 +30,6 @@ class BootStrap {
                 loadDatabaseMocks()
             }
             production {
-                // TODO: Remove this when we have every ABM ready for Production.
                 loadDatabaseMocks()
             }
         }
@@ -65,6 +64,7 @@ class BootStrap {
             def json = JSONUtils.parseString(file.getText())
             if(json) {
                 loadCareerFromJson(json)
+                loadCorrelativesFromJson(json)
             }
         }
     }
@@ -74,29 +74,56 @@ class BootStrap {
         career.name = json.name
 
         def plans = json.plans
-        if(plans) {
-            plans.each { pl ->
-                CareerPlan plan = new CareerPlan()
-                plan.name = pl.name
-                def subjects = pl.subjects
-                if(subjects) {
-                    subjects.each { sbj ->
-                        Subject subject = new Subject()
-                        subject.name = sbj.name
-                        subject.points = sbj.points
-                        subject.type = SubjectTypeEnum.REGULAR.id()
-                        subject.semester = sbj.semester[0]
-                        plan.addToSubjects(subject)
-                    }
-                }
-                career.addToPlans(plan)
-            }
+        if(!plans) {
+            return
         }
-        if(career.validate()) {
-            career.save(flush: true, failOnError: true)
-        }else{
+        plans.each { pl ->
+            CareerPlan plan = new CareerPlan()
+            plan.name = pl.name
+            plan.career = career
+            
+            def subjects = pl.subjects
+            if(!subjects) {
+                return
+            }
+            subjects.each { sbj ->
+                Subject subject = new Subject()
+                subject.id = sbj.id
+                subject.name = sbj.name
+                subject.points = sbj.points
+                subject.type = SubjectTypeEnum.REGULAR.id()
+                subject.semester = sbj.semester[0]
+                plan.addToSubjects(subject)
+            }
+            career.addToPlans(plan)
+        }
+        if(!career.validate()) {
             String message = "Error when trying to create career '${career.name}': ${career.errors}".toString()
             throw new Exception(message)
+        }
+        career.save(flush: true, failOnError: true)
+    }
+
+    private void loadCorrelativesFromJson(json) {
+        def plans = json.plans
+        if(!plans) {
+            return
+        }
+        plans.each { pl ->
+            def subjects = pl.subjects
+            if(!subjects) {
+                return
+            }
+            subjects.each { sbj ->
+                if(sbj.correlatives) {
+                    Subject current = Subject.get(sbj.id)
+                    def correlatives = Subject.getAll(sbj.correlatives)
+                    correlatives?.each { correlative ->
+                        current.addToCorrelatives(correlative)
+                    }
+                    current.save(flush: true, failOnError: true)
+                }
+            }
         }
     }
 

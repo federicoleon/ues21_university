@@ -21,7 +21,10 @@ grails.mime.types = [ // the first one is the default format
     js:            'text/javascript',
     json:          ['application/json', 'text/json'],
     multipartForm: 'multipart/form-data',
+    ods:           'application/vnd.oasis.opendocument.spreadsheet',
+    pdf:           'application/pdf',
     rss:           'application/rss+xml',
+    rtf:           'application/rtf',
     text:          'text/plain',
     hal:           ['application/hal+json','application/hal+xml'],
     xml:           ['text/xml', 'application/xml']
@@ -84,13 +87,11 @@ grails.hibernate.osiv.readonly = false
 environments {
     development {
         grails.logging.jul.usebridge = true
-        grails.serverURL = "http://22.edu.ar:8080"
     }
-    test {
-        grails.serverURL = "http://22.edu.ar:8080"
-    }
+
+    test {}
+
     production {
         grails.logging.jul.usebridge = false
-        // TODO: grails.serverURL = "http://www.changeme.com"
     }
 }

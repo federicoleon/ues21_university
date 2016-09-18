@@ -2,328 +2,514 @@
   "name": "Ingeniería en Software",
   "plans": [
     {
+      "id": 1,
       "name": 2008,
       "subjects": [
         {
+          "id": 1,
           "name": "Desarrollo Emprendedor",
           "points": 10,
           "semester": [
             1
-          ]
+          ],
+          "correlatives": []
         },
         {
+          "id": 2,
           "name": "Herramientas Matemáticas I - Álgebra",
           "points": 10,
           "semester": [
             1
-          ]
+          ],
+          "correlatives": []
         },
         {
+          "id": 3,
           "name": "Herramientas Matemáticas II - Análisis",
           "points": 10,
           "semester": [
             1
-          ]
+          ],
+          "correlatives": []
         },
         {
+          "id": 4,
           "name": "Idioma Extranjero I",
           "points": 10,
           "semester": [
             1
-          ]
+          ],
+          "correlatives": []
         },
         {
+          "id": 5,
           "name": "Introducción a los Algoritmos",
           "points": 10,
           "semester": [
             1
-          ]
+          ],
+          "correlatives": []
         },
         {
+          "id": 6,
           "name": "Sistemas de Información",
           "points": 10,
           "semester": [
             1
-          ]
+          ],
+          "correlatives": []
         },
         {
+          "id": 7,
           "name": "Arquitectura del Computador",
           "points": 10,
           "semester": [
             2
+          ],
+          "correlatives": [
+            5
           ]
         },
         {
+          "id": 8,
           "name": "Cálculo Avanzado",
           "points": 10,
           "semester": [
             2
+          ],
+          "correlatives": [
+            3
           ]
         },
         {
+          "id": 9,
           "name": "Idioma Extranjero II",
           "points": 10,
           "semester": [
             2
+          ],
+          "correlatives": [
+            4
           ]
         },
         {
+          "id": 10,
           "name": "Matemática Discreta",
           "points": 10,
           "semester": [
             2
-          ]
+          ],
+          "correlatives": []
         },
         {
+          "id": 11,
           "name": "Programación Orientada a Objetos",
           "points": 10,
           "semester": [
             2
+          ],
+          "correlatives": [
+            5
           ]
         },
         {
+          "id": 12,
           "name": "Algoritmos y Estructuras de Datos I",
           "points": 10,
           "semester": [
             3
+          ],
+          "correlatives": [
+            11
           ]
         },
         {
+          "id": 13,
           "name": "Grupo y Liderazgo",
           "points": 10,
           "semester": [
             3
-          ]
+          ],
+          "correlatives": []
         },
         {
+          "id": 14,
           "name": "Herramientas Matemáticas III - Estadística I",
           "points": 10,
           "semester": [
             3
-          ]
+          ],
+          "correlatives": []
         },
         {
+          "id": 15,
           "name": "Idioma Extranjero III",
           "points": 10,
           "semester": [
             3
+          ],
+          "correlatives": [
+            9
           ]
         },
         {
+          "id": 16,
           "name": "Lógica Simbólica",
           "points": 10,
           "semester": [
             3
-          ]
+          ],
+          "correlatives": []
         },
         {
+          "id": 17,
           "name": "Taller de Algoritmos y Estructura de Datos I",
           "points": 10,
           "semester": [
             3
+          ],
+          "correlatives": [
+            11
           ]
         },
         {
+          "id": 18,
           "name": "Algoritmos y Estructura de Datos II",
           "points": 10,
           "semester": [
             4
+          ],
+          "correlatives": [
+            12,
+            17
           ]
         },
         {
+          "id": 19,
           "name": "Idioma Extranjero IV",
           "points": 10,
           "semester": [
             4
+          ],
+          "correlatives": [
+            15
           ]
         },
         {
+          "id": 20,
           "name": "Paradigmas de Programación",
           "points": 10,
           "semester": [
             4
+          ],
+          "correlatives": [
+            11
           ]
         },
         {
+          "id": 21,
           "name": "Principios de Economía",
           "points": 10,
           "semester": [
             4
-          ]
+          ],
+          "correlatives": []
         },
         {
+          "id": 22,
           "name": "Taller de Algoritmos y Estructura de Datos II",
           "points": 10,
           "semester": [
             4
+          ],
+          "correlatives": [
+            12,
+            17
           ]
         },
         {
+          "id": 23,
           "name": "Analisis y Diseño de Software",
           "points": 10,
           "semester": [
             5
+          ],
+          "correlatives": [
+            12,
+            17
           ]
         },
         {
+          "id": 24,
           "name": "Herramientas Matemáticas V - Estadística II",
           "points": 10,
           "semester": [
             5
+          ],
+          "correlatives": [
+            14
           ]
         },
         {
+          "id": 25,
           "name": "Idioma Extranjero V",
           "points": 10,
           "semester": [
             5
+          ],
+          "correlatives": [
+            19
           ]
         },
         {
+          "id": 26,
           "name": "Sistemas Operativos",
           "points": 10,
           "semester": [
             5
+          ],
+          "correlatives": [
+            7
           ]
         },
         {
+          "id": 27,
           "name": "Taller De Análisis y Diseño De Software",
           "points": 10,
           "semester": [
             5
+          ],
+          "correlatives": [
+            12,
+            17
           ]
         },
         {
+          "id": 28,
           "name": "Ética y Deontología Profesional",
           "points": 10,
           "semester": [
             5
-          ]
+          ],
+          "correlatives": []
         },
         {
+          "id": 29,
           "name": "Bases de Datos I",
           "points": 10,
           "semester": [
             6
+          ],
+          "correlatives": [
+            12,
+            17
           ]
         },
         {
+          "id": 30,
           "name": "Idioma Extranjero VI",
           "points": 10,
           "semester": [
             6
+          ],
+          "correlatives": [
+            25
           ]
         },
         {
+          "id": 31,
           "name": "Ingenieria de Software",
           "points": 10,
           "semester": [
             6
+          ],
+          "correlatives": [
+            23
           ]
         },
         {
+          "id": 32,
           "name": "Seminario de Práctica de Analista en Software",
           "points": 10,
           "semester": [
             6
+          ],
+          "correlatives": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            24,
+            25,
+            26,
+            28,
+            30
           ]
         },
         {
+          "id": 33,
           "name": "Taller de Ingenieria de Software",
           "points": 10,
           "semester": [
             6
+          ],
+          "correlatives": [
+            23
           ]
         },
         {
+          "id": 34,
           "name": "Calidad de Software",
           "points": 10,
           "semester": [
             7
+          ],
+          "correlatives": [
+            31
           ]
         },
         {
+          "id": 35,
           "name": "Seguridad Informatica",
           "points": 10,
           "semester": [
             7
-          ]
+          ],
+          "correlatives": []
         },
         {
+          "id": 36,
           "name": "Sistemas Operativos II (Redes)",
           "points": 10,
           "semester": [
             7
+          ],
+          "correlatives": [
+            26
           ]
         },
         {
+          "id": 37,
           "name": "Administración de Proyectos",
           "points": 10,
           "semester": [
             8
+          ],
+          "correlatives": [
+            31
           ]
         },
         {
+          "id": 38,
           "name": "Base de Datos II",
           "points": 10,
           "semester": [
             8
+          ],
+          "correlatives": [
+            29,
+            31
           ]
         },
         {
+          "id": 39,
           "name": "Construccion De Software",
           "points": 10,
           "semester": [
             8
+          ],
+          "correlatives": [
+            31
           ]
         },
         {
+          "id": 40,
           "name": "Herramientas Matemáticas VI - Modelos de Simulación",
           "points": 10,
           "semester": [
             8
-          ]
+          ],
+          "correlatives": []
         },
         {
+          "id": 41,
           "name": "Taller de Construccion de Software",
           "points": 10,
           "semester": [
             8
+          ],
+          "correlatives": [
+            31
           ]
         },
         {
+          "id": 42,
           "name": "Emprendimientos Universitarios",
           "points": 10,
           "semester": [
             9
-          ]
+          ],
+          "correlatives": []
         },
         {
+          "id": 43,
           "name": "Metodos Formales",
           "points": 10,
           "semester": [
             9
+          ],
+          "correlatives": [
+            23
           ]
         },
         {
+          "id": 44,
           "name": "Práctica Profesional de Ingenieria en Software",
           "points": 10,
           "semester": [
             9
+          ],
+          "correlatives": [
+            23,
+            27,
+            29
           ]
         },
         {
+          "id": 45,
           "name": "Práctica Solidaria",
           "points": 10,
           "semester": [
             9
-          ]
+          ],
+          "correlatives": []
         },
         {
+          "id": 46,
           "name": "Seminario Final de Ingenieria en Software",
           "points": 10,
           "semester": [
             10
+          ],
+          "correlatives": [
+            44
           ]
         }
       ]

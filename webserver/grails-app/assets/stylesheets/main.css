@@ -1,17 +1,20 @@
 body, input, select, textarea {
-    font-family: Arial,Helvetica,"Nimbus Sans L",sans-serif;
+    color: #333333;
+    font-family: ‘Lucida Sans Unicode’, ‘Lucida Grande’, sans-serif;
 }
 
 input, select, textarea {
     border: 1px solid #CDCDCD;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
 }
 
 h1, h2, h3, h4, h5 {
     padding: 2px;
     margin: 0px;
+    margin-bottom: 15px;
+    color: #4CAF50;
 }
 
 h1 {
@@ -24,6 +27,12 @@ html {
     font-size: 13px;
 }
 
+html, html a {
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+}
+
 ol, ul {
     list-style: none;
     padding: 0;
@@ -34,6 +43,29 @@ fieldset {
     border: 0;
     margin: 0;
     padding: 0
+}
+
+select {
+    border: 1px solid #DBDBDB;
+    border-radius: 0px;
+    height: 25px;
+    font-size: 13px;
+    padding: 10px;
+}
+
+input {
+    border: 1px solid #DBDBDB;
+    border-radius: 0px;
+    height: 25px;
+    font-size: 13px;
+}
+
+input[type=submit] {
+    color: #FFFFFF;
+    height: 25px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-weight: 700;
 }
 
 .info, .success, .warning, .error, .validation {
@@ -96,6 +128,14 @@ fieldset {
     background-color: #555555;
 }
 
+.c-left {
+    text-align: left;
+}
+
+.c-bold {
+    font-weight: 700;
+}
+
 #main-container {
     min-width: 365px;
     border: 1px solid #CACACA;
@@ -104,6 +144,54 @@ fieldset {
     width: 80%;
     background-color: #F9F9F9;
     position: relative;
+    border-radius: 5px;
+}
+
+#main-container .row-low {
+    background-color: #FFFFFF;
+}
+
+#main-container .row-high {
+    background-color: #F9F9F9;
+}
+
+#main-body table {
+    padding: 0;
+    margin: 0;
+    border: 1px solid #9F9F9F;
+    border-bottom: 0px;
+    border-spacing: 0px;
+    border-collapse: separate;
+    width: 100%;
+    border-radius: 5px;
+}
+
+#main-body table tr {
+    text-align: center;
+}
+
+#main-body table tr.tbl-title {
+    background-color: #71D075;
+}
+
+#main-body table tr.tbl-subtitle {
+    background-color: #B4EEB6
+}
+
+#main-body table tr:first-child {
+    text-align: center;
+    font-weight: bold;
+}
+
+#main-body table td {
+    padding: 3px;
+    margin: 0;
+    border-right: 1px solid #9F9F9F;
+    border-bottom: 1px solid #9F9F9F;
+}
+
+#main-body table td:last-child {
+    border-right: 0px;
 }
 
 #main-container #login-container {
@@ -141,6 +229,7 @@ fieldset {
 
 nav{
     display:block;
+    border-bottom: 1px solid;
 }
 
 .menu {
@@ -314,40 +403,36 @@ nav{
     padding: 7px 11px 5px 0;
 }
 
-#main-container #teacher-list-cathedras-form-container {
-
-}
-
-#teacher-list-cathedras-form-container table {
-    padding: 0;
-    margin: 0;
-    border: 1px solid #000000;
-    border-bottom: 0px;
-    border-spacing: 0px;
-    border-collapse: separate;
-}
-
-#teacher-list-cathedras-form-container table tr {
-}
-
-#teacher-list-cathedras-form-container table tr:first-child {
-    text-align: center;
-    font-weight: bold;
-}
-
-#teacher-list-cathedras-form-container table td {
-    padding: 3px;
-    margin: 0;
-    border-right: 1px solid #000000;
-    border-bottom: 1px solid #000000;
-}
-
-#teacher-list-cathedras-form-container table td:last-child {
-    border-right: 0px;
-}
-
 #main-container #main-footer {
     position: relative;
+}
+
+#career-selector {
+    margin-bottom: 20px;
+}
+
+#career-selector select {
+    margin-left: 10px;
+}
+
+#career-selector input {
+    margin-left: 15px;
+}
+
+#student-selector {
+    margin-bottom: 20px;
+}
+
+#student-selector select {
+    margin-left: 10px;
+}
+
+#student-selector input {
+    margin-left: 15px;
+}
+
+#reg-student-cathedras-actions {
+    margin-top: 20px;
 }
 
 #main-footer #footer-copyright {
