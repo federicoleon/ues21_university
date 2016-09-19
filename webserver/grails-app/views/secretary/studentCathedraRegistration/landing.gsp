@@ -32,7 +32,7 @@
             </g:if>
 
             <g:if test="${errorMessage}">
-                <div class="event-message-container ${errorClass ? $errorClass : 'error'}">
+                <div class="event-message-container ${errorClass}">
                     <span>${errorMessage}</span>
                 </div>
             </g:if>

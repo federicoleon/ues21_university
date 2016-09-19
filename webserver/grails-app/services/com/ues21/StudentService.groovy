@@ -2,7 +2,7 @@ package com.ues21
 
 import org.codehaus.groovy.grails.web.json.JSONObject
 import com.ues21.enums.ExamStatusEnum
-
+import com.ues21.utils.DateUtils
 import grails.transaction.Transactional
 
 @Transactional
@@ -79,5 +79,46 @@ class StudentService extends PersonService {
             }
         }
         return result 
+    }
+
+    public Map getStudentPublicMV(Long studentId) {
+        if(!studentId) {
+            return error()
+        }
+        Student student = Student.get(2)
+        if(!student) {
+            return error()
+        }
+
+        def allCareers = CareersXStudent.withCriteria {
+            eq("status", 1)
+            eq("student", student)
+        }
+
+        def careers = []
+        allCareers?.each { cxe ->
+            careers << [
+                id: cxe.career.id,
+                name: cxe.career.name
+            ]
+        }
+
+        def model = [
+            creationDate: DateUtils.getOnlyDateMV(student.creationDate),
+            fileNumber: student.fileNumber,
+            fullName: (student.lastName + " " + student.firstName),
+            firstName: student.firstName,
+            lastName: student.lastName,
+            identification: [
+                type: student.identification.type,
+                number: student.identification.number
+            ],
+            vcardData: student.getVcardData(),
+            email: student.emails?.getAt(0),
+            phone: student.phones?.getAt(0),
+            careers: careers
+        ]
+
+        return model
     }
 }

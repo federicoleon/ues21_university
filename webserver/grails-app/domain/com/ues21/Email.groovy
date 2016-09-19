@@ -6,4 +6,8 @@ class Email implements Serializable {
     int status = 1
 
     static belongsTo = [person: Person]
+
+    static constraints = {
+        address email: true
+    }
 }

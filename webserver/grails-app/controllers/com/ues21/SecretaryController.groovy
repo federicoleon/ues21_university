@@ -3,6 +3,7 @@ package com.ues21
 import com.ues21.utils.*
 import com.ues21.enums.*
 import com.ues21.constants.Constants
+import org.codehaus.groovy.grails.web.context.ServletContextHolder
 
 class SecretaryController {
 
@@ -10,6 +11,7 @@ class SecretaryController {
     def studentService
     def careerService
     def subjectService
+    def pdfRenderingService
     
     def registerStudentFlow = {
         
@@ -26,8 +28,7 @@ class SecretaryController {
         }
 
         landing {
-            on("register") {
-            }.to("processCareerRegistration")
+            on("register").to("processCareerRegistration")
         }
 
         processCareerRegistration {
@@ -65,7 +66,7 @@ class SecretaryController {
                 }
 
                 // Register current student:
-                student.save(flush: true, failOnError: true)
+                def std = student.save(flush: true, failOnError: true)
 
                 // Check for received careerId:
                 Long careerId = params.long("carreerId")
@@ -87,8 +88,10 @@ class SecretaryController {
                 }else{
                     return error()
                 }
+
+                flow.studentId = std.id
             }
-            on("success").to("success")
+            on("success").to("savePDFReport")
             on("error").to("error")
         }
 
@@ -99,7 +102,31 @@ class SecretaryController {
             ]
         }
 
+        savePDFReport {
+            action {
+                def model = studentService.getStudentPublicMV(flow.studentId)
+                try {
+
+                    def bytes = model.vcardData.getBytes()
+                    def data = bytes.encodeBase64().toString()
+                    String path = ServletContextHolder.servletContext.getRealPath('qrs')
+                    QRCodeService.createQRCodeAndLogoBase64(data, path, "registration_${studentId}.png".toString() )
+
+                    /*
+                    ByteArrayOutputStream bytes = pdfRenderingService.render(template: "/reports/student_registration", controller: this, model: model)
+                    def fos = new FileOutputStream('NewTestFile.pdf')
+                    fos.write(bytes.toByteArray())
+                    fos.close()
+                    */
+                }catch(Exception e) {
+                }
+                return model
+            }
+            on("success").to("success")
+        }
+
         success {
+
         }
     }
 
@@ -265,6 +292,8 @@ class SecretaryController {
                 }
                 
                 if(!ids) {
+                    flow.errorMessage = "Debe seleccionar al menos una materia para la inscripción."
+                    flow.errorClass = Constants.CLASS_INFO
                     return error()
                 }
 

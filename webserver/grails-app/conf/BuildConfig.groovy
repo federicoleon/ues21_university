@@ -35,6 +35,8 @@ grails.project.dependency.resolution = {
         mavenLocal()
         grailsCentral()
         mavenCentral()
+
+        mavenRepo "https://repo.grails.org/grails/core"
     }
 
     def gebVersion = "0.13.0"
@@ -52,6 +54,7 @@ grails.project.dependency.resolution = {
         test("org.seleniumhq.selenium:selenium-htmlunit-driver:$seleniumVersion") {
             exclude "xml-apis"
         }
+        runtime 'org.springframework:spring-test:3.2.2'
     }
 
     plugins {
@@ -63,6 +66,9 @@ grails.project.dependency.resolution = {
         compile ":asset-pipeline:2.1.5"
         compile "org.grails.plugins:geb:$gebVersion"
         compile ':webflow:2.1.0'
+        compile "org.grails.plugins:rendering:1.0.0"
+
+        compile "org.grails.plugins:qr-code:0.1.4"
 
         // plugins needed at runtime but not for compilation
         runtime ":jquery:1.11.1"

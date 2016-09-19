@@ -12,7 +12,7 @@
                     <ol>
                         <li class="form-row">
                             <label for="quantity" class="required">
-                                <g:textField name="username" value="" tabindex="1" placeholder="Usuario" />
+                                <g:textField name="username" value="${params.username}" tabindex="1" placeholder="Usuario" />
                             </label>
                         </li>
                         <li class="form-row">

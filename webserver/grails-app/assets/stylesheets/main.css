@@ -1,6 +1,5 @@
 body, input, select, textarea {
     color: #333333;
-    font-family: ‘Lucida Sans Unicode’, ‘Lucida Grande’, sans-serif;
 }
 
 input, select, textarea {
@@ -440,4 +439,53 @@ nav{
     padding: 5px;
     font-size: 11px;
     text-align: center;
+}
+
+#report-container {
+    width: 500px;
+    color: #000000;
+}
+
+#report-container #form-container {
+
+}
+
+#report-container #header {
+    overflow: hidden;
+}
+
+#report-container #header #title {
+}
+
+#report-container #header #title h1 {
+    color: #000000;
+    font-size: 15;
+}
+
+#report-container #header #title h2 {
+    color: #000000;
+    font-size: 13;
+}
+
+#report-container #header #title h3 {
+    color: #000000;
+    font-size: 11;
+}
+
+#downloader-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.qr-code {
+    margin-top: 15px;
+    text-align: center;
+}
+
+#report-container #header #qr-code {
+
+}
+
+#report-container #body {
+
 }
