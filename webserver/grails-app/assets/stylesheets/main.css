@@ -1,5 +1,6 @@
 body, input, select, textarea {
     color: #333333;
+    font-family: ‘Lucida Sans Unicode’, ‘Lucida Grande’, sans-serif;
 }
 
 input, select, textarea {
