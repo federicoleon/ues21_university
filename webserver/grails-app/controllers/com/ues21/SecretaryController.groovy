@@ -96,10 +96,13 @@ class SecretaryController {
         }
 
         error {
-            return [
-                error: true,
-                error_msg: "Ha ocurrido un error al intentar registrar el usuario"
-            ]
+            action {
+                return [
+                    error: true,
+                    error_msg: "Ha ocurrido un error al intentar registrar el usuario"
+                ]
+            }
+            on("success").to("landing")
         }
 
         savePDFReport {
