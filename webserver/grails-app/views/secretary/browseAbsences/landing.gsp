@@ -2,11 +2,11 @@
 <html>
     <head>
         <meta name="layout" content="management"/>
-        <title>Consulta de inscripción a cursado</title>
+        <title>Consulta de inasistencias</title>
     </head>
     <body>
         <div id="list-cathedras-form-container">
-            <h1>Consulta de inscripción a cursado</h1>
+            <h1>Consulta de inasistencias</h1>
 
             <div id="career-selector">
                 <g:form name="careerSelector">

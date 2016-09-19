@@ -2,6 +2,7 @@ package com.ues21.enums
 
 public enum ExamStatusEnum {
     
+    AVAILABLE(0, "Inscripto"),
     ABSENT(1, "Ausente"),
     FAILED(2, "Reprobado"),
     APPROVED(3, "Aprobado"),
