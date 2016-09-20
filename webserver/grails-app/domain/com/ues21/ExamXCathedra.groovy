@@ -3,12 +3,13 @@ package com.ues21
 class ExamXCathedra implements Serializable {
     
     Cathedra cathedra
-    Exam exam
-    String status
+    ExamType examType
+    int status = 1
+    Date creationDate = new Date()
 
     static constraints = {
         cathedra nullable: false
-        exam nullable: false
+        examType nullable: false
         status nullable: false
     }
 }

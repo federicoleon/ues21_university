@@ -15,7 +15,12 @@
                 <li><a href="#"><i class="icon-home"></i>Inscripciones</a>
                     <ul class="sub-menu">
                         <li><g:link controller="secretary" action="studentCathedraRegistration">A cursado</g:link></li>
-                        <li><a href="#">A mesa de examen</a></li>
+                        <li><g:link controller="secretary" action="registerStudentInExam">A examen</g:link></li>
+                    </ul>
+                </li>
+                <li><a href="#"><i class="icon-home"></i>Mesas de examen</a>
+                    <ul class="sub-menu">
+                        <li><g:link controller="secretary" action="enableTestsPeriod">Habilitar</g:link></li>
                     </ul>
                 </li>
             </ul>
@@ -28,7 +33,7 @@
                         <li><a href="#">Inscripción</a>
                             <ul class="sub-menu">
                                 <li><g:link controller="secretary" action="browseCourseRegistration">A cursado</g:link></li>
-                                <li><a href="#">A mesa de examen</a></li>
+                                <li><a href="#">A examen</a></li>
                             </ul>
                         </li>
 

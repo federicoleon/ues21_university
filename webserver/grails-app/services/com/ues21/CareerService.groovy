@@ -1,9 +1,12 @@
 package com.ues21
 
 import grails.transaction.Transactional
+import com.ues21.enums.*
 
 @Transactional
 class CareerService {
+
+    def cathedraService
 
     public List getCareersModelView() {
         def careers = listAllCareers()
@@ -73,5 +76,125 @@ class CareerService {
             ]
         }
         return result
+    }
+
+    public Map getExamPeriodToOpen(Long careerId) {
+        Career career = Career.get(careerId)
+        if(!career) {
+            return null
+        }
+
+        UniversityConfig config = UniversityConfig.findByCareer(career)
+        if(!config) {
+            return [
+                career: career.id,
+                type: ExamTypeEnum.FIRST.id(),
+                name: ExamTypeEnum.FIRST.type()
+            ]
+        }
+
+        switch(config.currentExamPeriod) {
+            case ExamTypeEnum.FIRST.id():
+                return [
+                    career: career.id,
+                    type: ExamTypeEnum.SECOND.id(),
+                    name: ExamTypeEnum.SECOND.type()
+                ]
+
+            case ExamTypeEnum.SECOND.id():
+                return [
+                    career: career.id,
+                    type: ExamTypeEnum.RETRY.id(),
+                    name: ExamTypeEnum.RETRY.type()
+                ]
+
+            case ExamTypeEnum.RETRY.id():
+                return [
+                    career: career.id,
+                    type: ExamTypeEnum.FINAL.id(),
+                    name: ExamTypeEnum.FINAL.type()
+                ]
+
+            case ExamTypeEnum.FINAL.id():
+                return null
+
+            default:
+                return null
+        }
+    }
+
+    public boolean openExamPeriod(Long careerId) {
+        Career career = Career.get(careerId)
+        if(!career) {
+            return false
+        }
+
+        Map examPeriodToOpen = getExamPeriodToOpen(careerId)
+        if(!examPeriodToOpen) {
+            return false
+        }
+
+        UniversityConfig config = UniversityConfig.findByCareer(career)
+        if(!config) {
+            config = new UniversityConfig()
+            config.career = career
+        }
+        config.currentExamPeriod = examPeriodToOpen.type
+        config.status = 1
+        if(!config.validate()) {
+            config.save(flush: true, failOnError: true)
+            return false
+        }
+
+        List cathedras = cathedraService.getCathedrasForCareer(careerId)
+        if(!cathedras) {
+            return false
+        }
+
+        ExamType examType = ExamType.get(examPeriodToOpen.type)
+        if(!examType) {
+            return false
+        }
+
+        cathedras.each { cathedra ->
+            ExamXCathedra exam = new ExamXCathedra()
+            exam.cathedra = cathedra
+            exam.examType = examType
+            exam.save(flush: true, failOnError: true)
+        }
+    }
+
+    public List getAvailableExamsMV(Long careerId, Long studentId) {
+        Career career = Career.get(careerId)
+        if(!career) {
+            return []
+        }
+
+        List cathedras = cathedraService.getActiveCathedrasFromStudent(studentId)
+        if(!cathedras) {
+            return []
+        }
+
+        Student student = Student.get(studentId)
+        if(!student) {
+            return []
+        }
+
+        List result = []
+        cathedras.each { cathedra ->
+            def exams = ExamXCathedra.withCriteria {
+                eq("cathedra", cathedra)
+                eq("status", 1)
+            }
+            exams.each { exam ->
+                result << [
+                    exam_id: exam.id,
+                    exam_type: exam.examType.type,
+                    subject: cathedra.subject.name
+                ]
+            }
+        }
+        return result
+
     }
 }

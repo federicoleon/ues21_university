@@ -457,4 +457,164 @@ class SecretaryController {
             on("success").to("landing")
         }
     }
+
+    def enableTestsPeriodFlow = {
+        init {
+            action {
+                def careers = careerService.getCareersModelView()
+                flow.careers = careers
+                return [careers: flow.careers, students: [], absences: []]
+            }
+            on("success").to("landing")
+        }
+
+        landing {
+            on("findCathedras") {
+                Long careerId = params.long("careerId")
+                flow.careerId = careerId
+            }.to("searchNextExamPeriod")
+
+            on("enablePeriod") {
+                int examPeriodId = params.int("examPeriodId")
+                flow.examPeriodId = examPeriodId
+            }.to("processEnableExamPeriod")
+        }
+
+        searchNextExamPeriod {
+            action {
+                Long careerId = flow.careerId
+                if(!careerId) {
+                    return error()
+                }
+                
+                Map examPeriodToOpen = careerService.getExamPeriodToOpen(careerId)
+                flow.examPeriodToOpen = examPeriodToOpen
+                
+                return [careers: flow.careers, examPeriod: examPeriodToOpen]
+            }
+            on("success").to("landing")
+        }
+
+        processEnableExamPeriod {
+            action {
+                int examPeriodId = flow.examPeriodId
+                if(!examPeriodId) {
+                    flow.errorMessage = "No se ha seleccionado ningún periodo de examen para habilitar."
+                    return error()
+                }
+
+                Map savedPeriod = flow.examPeriodToOpen
+                if(!savedPeriod) {
+                    flow.errorMessage = "No se ha seleccionado ningún periodo de examen para habilitar."
+                    return error()
+                }
+
+                if(examPeriodId != savedPeriod.type) {
+                    flow.errorMessage = "Se ha modificado el formulario sin autorización. El administrador ha sido notificado de este evento."
+                    return error()
+                }
+
+                Long careerId = flow.careerId
+
+                def opened = careerService.openExamPeriod(careerId)
+                if(!opened) {
+                    flow.errorMessage = "Ha ocurrido un error al intentar habilitar el periodo de examen seleccionado."
+                    error()
+                }
+            }
+            on("error").to("error")
+            on("success").to("finish")
+        }
+
+        error {
+            action {
+                return [
+                    errorMessage: flow.errorMessage
+                ]
+            }
+            on("success").to("landing")
+        }
+
+        finish {}
+    }
+
+    def registerStudentInExamFlow = {
+        init {
+            action {
+                def careers = careerService.getCareersModelView()
+                flow.careers = careers
+                return [careers: flow.careers, students: [], exams: []]
+            }
+            on("success").to("landing")
+        }
+
+        landing {
+            on("findStudents") {
+                Long careerId = params.long("careerId")
+                flow.careerId = careerId
+            }.to("searchStudents")
+
+            on("findAvailableExams") {
+                Long studentId = params.long("studentId")
+                flow.studentId = studentId
+            }.to("searchAvailableExams")
+
+            on("confirmRegistration") {
+                List selectedExams = params.list('exam_selection')
+                flow.selectedExams = selectedExams
+            }.to("processRegistration")
+        }
+
+        searchStudents {
+            action {
+                Long careerId = flow.careerId
+                if(!careerId) {
+                    return error()
+                }
+                def students = careerService.getStudentsFromCareerMV(careerId)
+                if(!students) {
+                    students = null
+                }
+                flow.students = students
+                return [careers: flow.careers, students: flow.students, exams: []]
+            }
+            on("success").to("landing")
+        }
+
+        searchAvailableExams {
+            action {
+                Long studentId = flow.studentId
+                Long careerId = flow.careerId
+                if(!careerId || !studentId) {
+                    flow.errorMessage = "Datos inválidos. Se ha notificado al administrador."
+                    return error()
+                }
+
+                def exams = careerService.getAvailableExamsMV(careerId, studentId)
+                if(!exams) {
+                    exams = null
+                }
+                return [careers: flow.careers, students: flow.students, exams: exams]
+            }
+            on("success").to("landing")
+            on("error").to("error")
+        }
+
+        processRegistration {
+            action {
+
+            }
+            on("error").to("error")
+            on("success").to("finish")
+        }
+
+        error {
+            action {
+                return []
+            }
+            on("success").to("landing")
+        }
+
+        finish {}
+    }
 }

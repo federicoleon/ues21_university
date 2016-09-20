@@ -5,8 +5,7 @@ public enum ExamTypeEnum {
     FIRST(1, "Primer parcial"),
     SECOND(2, "Segundo parcial"),
     RETRY(3, "Recuperatorio"),
-    INTEGRATOR(4, "Integrador"),
-    FINAL(5, "Final")
+    FINAL(4, "Final")
 
     private final int id
     private final String type
