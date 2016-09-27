@@ -602,7 +602,33 @@ class SecretaryController {
 
         processRegistration {
             action {
+                List<Long> examIds
+                try {
+                    examIds = flow.selectedExams?.collect {it as Long}
+                } catch(Exception e) {
+                    flow.errorMessage = "Se ha modificado el formulario de forma no autorizada. El administrador ha sido notificado."
+                    flow.errorClass = Constants.CLASS_ERROR
+                    return error()
+                }
+                if(!examIds) {
+                    flow.errorMessage = "Debe seleccionar al menos una mesa de examen."
+                    flow.errorClass = Constants.CLASS_ERROR
+                    return error()
+                }
 
+                Long studentId = flow.studentId
+                if(!studentId) {
+                    flow.errorMessage = "No se encuentra el alumno seleccionado. Se ha notificado al administrador."
+                    flow.errorClass = Constants.CLASS_ERROR
+                    return error()
+                }
+
+                boolean registered = studentService.registerInExams(studentId, examIds)
+                if(!registered) {
+                    flow.errorMessage = "Ha ocurrido un error al intentar inscribir al alumno en las mesas de examen seleccionadas. Intente nuevamente más tarde."
+                    flow.errorClass = Constants.CLASS_ERROR
+                    return error()
+                }
             }
             on("error").to("error")
             on("success").to("finish")
@@ -616,5 +642,56 @@ class SecretaryController {
         }
 
         finish {}
+    }
+
+    def browseExamRegistrationFlow = {
+        init {
+            action {
+                def careers = careerService.getCareersModelView()
+                flow.careers = careers
+                return [careers: flow.careers, students: [], exams: []]
+            }
+            on("success").to("landing")
+        }
+
+        landing {
+            on("findCathedras") {
+                Long careerId = params.long("careerId")
+                flow.careerId = careerId
+            }.to("searchStudents")
+
+            on("findRegistrations") {
+                Long studentId = params.long("studentId")
+                flow.studentId = studentId
+            }.to("searchExamRegistrations")
+        }
+
+        searchStudents {
+            action {
+                Long careerId = flow.careerId
+                if(!careerId) {
+                    return error()
+                }
+                def students = careerService.getStudentsFromCareerMV(careerId)
+                if(!students) {
+                    students = null
+                }
+                flow.students = students
+                return [careers: flow.careers, students: flow.students, exams: []]
+            }
+            on("success").to("landing")
+        }
+
+        searchExamRegistrations {
+            action {
+                Long studentId = flow.studentId
+                List result = studentService.getRegisteredActiveExamsModelView(studentId)
+                if(!result) {
+                    result = null
+                }
+                return [careers: flow.careers, students: flow.students, exams: result]
+            }
+            on("success").to("landing")
+        }
     }
 }

@@ -121,4 +121,56 @@ class StudentService extends PersonService {
 
         return model
     }
+
+    public boolean registerInExams(Long studentId, List<Long> examIds) {
+        if(!examIds || !studentId) {
+            return false
+        }
+
+        Student student = Student.get(studentId)
+        if(!student) {
+            return false
+        }
+
+        examIds.each { examId ->
+            ExamXCathedra examXCathedra = ExamXCathedra.get(examId)
+            if(!examXCathedra) {
+                return false
+            }
+            ExamXStudent result = new ExamXStudent()
+            result.student = student
+            result.exam = examXCathedra
+            result.status = 1
+            if(!result.validate()) {
+                return false
+            }
+
+            result.save(flush: true, failOnError: true)
+        }
+
+        return true
+    }
+
+    public List getRegisteredActiveExamsModelView(Long studentId) {
+        List result = []
+        Student student = Student.get(studentId)
+        if(!student) {
+            return result
+        }
+
+        def exams = ExamXStudent.withCriteria {
+            eq("student", student)
+            eq("status", 1)
+        }
+
+        exams?.each { exam ->
+            result << [
+                subject: exam.exam.cathedra.subject.name,
+                exam_type: exam.exam.examType.type,
+                status: exam.getExamStatusValue()
+            ]
+        }
+
+        return result
+    }
 }

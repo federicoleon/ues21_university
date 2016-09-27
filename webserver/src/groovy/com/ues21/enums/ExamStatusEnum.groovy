@@ -33,7 +33,7 @@ public enum ExamStatusEnum {
     public static int getExamStatusValue(float grade) {
         switch(grade) {
             case -1F:
-                return ABSENT.id()
+                return AVAILABLE.id()
 
             case [0F..4F]:
                 return FAILED.id()

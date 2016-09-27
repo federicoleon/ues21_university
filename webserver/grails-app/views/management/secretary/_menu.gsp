@@ -33,7 +33,7 @@
                         <li><a href="#">Inscripción</a>
                             <ul class="sub-menu">
                                 <li><g:link controller="secretary" action="browseCourseRegistration">A cursado</g:link></li>
-                                <li><a href="#">A examen</a></li>
+                                <li><g:link controller="secretary" action="browseExamRegistration">A examen</g:link></li>
                             </ul>
                         </li>
 
