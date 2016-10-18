@@ -9,7 +9,7 @@
             <h1>Registrar nuevo alumno</h1>
             <g:form name="registerStudent">
                 <label>Carrera:</label>
-                <g:select name="carreerId" from="${careers}" optionKey="id" optionValue="name"/>
+            <g:select name="carreerIds" from="${careers}" optionKey="id" optionValue="name" multiple="true" />
                 <br>
                 
                 <label>Nombres:</label>

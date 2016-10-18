@@ -48,7 +48,6 @@ fieldset {
 select {
     border: 1px solid #DBDBDB;
     border-radius: 0px;
-    height: 25px;
     font-size: 13px;
     padding: 10px;
 }

@@ -69,24 +69,23 @@ class SecretaryController {
                 def std = student.save(flush: true, failOnError: true)
 
                 // Check for received careerId:
-                Long careerId = params.long("carreerId")
-                if(!careerId) {
+                List careerIds = params.list('carreerIds')
+                if(!careerIds) {
                     return error()
                 }
 
-                Career career = Career.get(careerId)
-                if(!career) {
-                    return error()
-                }
-
-                // If we have the career, then save the relation between student and career:
-                CareersXStudent cxs = new CareersXStudent()
-                cxs.career = career
-                cxs.student = student
-                if(cxs.validate()) {
-                    cxs.save(flush: true, failOnError: true)
-                }else{
-                    return error()
+                careerIds?.each { careerId ->
+                    Career career = Career.get(careerId)
+                    if(!career) {
+                        return error()
+                    }
+                    // If we have the career, then save the relation between student and career:
+                    CareersXStudent cxs = new CareersXStudent()
+                    cxs.career = career
+                    cxs.student = student
+                    if(cxs.validate()) {
+                        cxs.save(flush: true, failOnError: true)
+                    }
                 }
 
                 flow.studentId = std.id
