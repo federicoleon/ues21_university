@@ -85,7 +85,7 @@ class StudentService extends PersonService {
         if(!studentId) {
             return error()
         }
-        Student student = Student.get(2)
+        Student student = Student.get(studentId)
         if(!student) {
             return error()
         }
@@ -171,6 +171,68 @@ class StudentService extends PersonService {
             ]
         }
 
+        return result
+    }
+
+    public List getAvailableCareers(Long studentId) {
+        List result = []
+
+        if(!studentId) {
+            return result
+        }
+
+        Student student = Student.get(studentId)
+        if(!student) {
+            return result
+        }
+
+        def registeredCareers = CareersXStudent.withCriteria {
+            eq("status", 1)
+            eq("student", student)
+        }.collect { it.career }
+
+        def allCareers = careerService.listAllCareers()
+
+        allCareers.each { career ->
+            if(!registeredCareers.contains(career)) {
+                result << career
+            }
+        }
+        return result
+    }
+
+    public boolean registerInCareer(Long studentId, Long careerId) {
+        Student student = Student.get(studentId)
+        if(!student) {
+            return false
+        }
+
+        Career career = Career.get(careerId)
+        if(!career) {
+            return false
+        }
+
+        CareersXStudent cxs = new CareersXStudent()
+        cxs.career = career
+        cxs.student = student
+        if(cxs.validate()) {
+            cxs.save(flush: true, failOnError: true)
+            return true
+        }
+        
+        return false
+    }
+
+    public List getAllStudents() {
+        def students = Student.list()
+
+        def result = []
+        students.each { student ->
+            result << [
+                id: student.id,
+                full_name:  student.getFullName()
+            ]
+        }
         return result
     }
 }

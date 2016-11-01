@@ -16,6 +16,7 @@
                     <ul class="sub-menu">
                         <li><g:link controller="secretary" action="studentCathedraRegistration">A cursado</g:link></li>
                         <li><g:link controller="secretary" action="registerStudentInExam">A examen</g:link></li>
+                        <li><g:link controller="secretary" action="registerStudentInCareer">A carrera</g:link></li>
                     </ul>
                 </li>
                 <li><a href="#"><i class="icon-home"></i>Mesas de examen</a>

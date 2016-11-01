@@ -1,0 +1,38 @@
+{
+  "name": "Licenciatura en Psicología",
+  "plans": [
+    {
+      "id": 1,
+      "name": 2008,
+      "subjects": [
+        {
+          "id": 47,
+          "name": "Introducción a la Psicología",
+          "points": 10,
+          "semester": [
+            1
+          ],
+          "correlatives": []
+        },
+        {
+          "id": 48,
+          "name": "Neuroanatomía y Neurofisiología",
+          "points": 10,
+          "semester": [
+            1
+          ],
+          "correlatives": []
+        },
+        {
+          "id": 49,
+          "name": "Psicología Evolutiva I",
+          "points": 10,
+          "semester": [
+            1
+          ],
+          "correlatives": []
+        }
+      ]
+    }
+  ]
+}

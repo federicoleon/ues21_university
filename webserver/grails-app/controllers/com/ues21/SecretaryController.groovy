@@ -693,4 +693,79 @@ class SecretaryController {
             on("success").to("landing")
         }
     }
+
+    def registerStudentInCareerFlow = {
+        init {
+            action {
+                def students = studentService.getAllStudents()
+                flow.students = students
+                return [students: flow.students, careers: []]
+            }
+            on("success").to("landing")
+        }
+
+        landing {
+            on("findAvailableCareers") {
+                Long studentId = params.long("studentId")
+                flow.studentId = studentId
+            }.to("searchAvailableCareers")
+
+            on("confirmRegistration") {
+                Long careerId = params.long("careerId")
+                flow.careerId = careerId
+            }.to("processRegistration")
+        }
+
+        searchAvailableCareers {
+            action {
+                Long studentId = flow.studentId
+                if(!studentId) {
+                    flow.errorMessage = "No se encuentra el alumno seleccionado. Se ha notificado al administrador."
+                    flow.errorClass = Constants.CLASS_ERROR
+                    return error()
+                }
+                def careers = studentService.getAvailableCareers(studentId)
+                
+                flow.careers = careers
+                return [students: flow.students, careers: flow.careers]
+            }
+            on("success").to("landing")
+        }
+
+        processRegistration {
+            action {
+                Long studentId = flow.studentId
+                if(!studentId) {
+                    flow.errorMessage = "No se encuentra el alumno seleccionado. Se ha notificado al administrador."
+                    flow.errorClass = Constants.CLASS_ERROR
+                    return error()
+                }
+
+                Long careerId = flow.careerId
+                if(!careerId) {
+                    flow.errorMessage = "No se encuentra la carrera seleccionada. Se ha notificado al administrador."
+                    flow.errorClass = Constants.CLASS_ERROR
+                    return error()
+                }
+
+                boolean registered = studentService.registerInCareer(studentId, careerId)
+                if(!registered) {
+                    flow.errorMessage = "Ha ocurrido un error al intentar inscribir al alumno en la carrera seleccionada. Intente nuevamente más tarde."
+                    flow.errorClass = Constants.CLASS_ERROR
+                    return error()
+                }
+            }
+            on("error").to("error")
+            on("success").to("finish")
+        }
+
+        error {
+            action {
+                return []
+            }
+            on("success").to("landing")
+        }
+
+        finish {}
+    }
 }

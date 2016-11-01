@@ -8,4 +8,13 @@ class Career implements Serializable {
     public String toString() {
         return name
     }
+
+    @Override
+    public boolean equals (Object other) {
+        if(!other) {
+            return false
+        }
+        Career aux = (Career)other
+        return this.name == other.name
+    }
 }
