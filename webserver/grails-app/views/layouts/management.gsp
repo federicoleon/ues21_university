@@ -15,6 +15,7 @@
         <g:javascript library="jquery" plugin="jquery"/>
         <asset:stylesheet src="main.css"/>
         <asset:javascript src="main.js"/>
+        <asset:javascript src="ga.js"/>
         <g:layoutHead/>
     </head>
     <body>

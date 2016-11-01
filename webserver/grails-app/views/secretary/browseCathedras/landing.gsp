@@ -3,6 +3,11 @@
     <head>
         <meta name="layout" content="management"/>
         <title>Listado de comisiones</title>
+
+        <script>
+            ga('set', 'page', '/browse-cathedras');
+            ga('send', 'pageview');
+        </script>
     </head>
     <body>
         <div id="list-cathedras-form-container">

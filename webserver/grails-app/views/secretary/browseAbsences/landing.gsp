@@ -3,6 +3,11 @@
     <head>
         <meta name="layout" content="management"/>
         <title>Consulta de inasistencias</title>
+
+        <script>
+            ga('set', 'page', '/browse-absences');
+            ga('send', 'pageview');
+        </script>
     </head>
     <body>
         <div id="list-cathedras-form-container">

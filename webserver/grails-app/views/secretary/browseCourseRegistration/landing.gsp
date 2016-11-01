@@ -3,6 +3,11 @@
     <head>
         <meta name="layout" content="management"/>
         <title>Consulta de inscripción a cursado</title>
+
+        <script>
+            ga('set', 'page', '/browse-course-registration');
+            ga('send', 'pageview');
+        </script>
     </head>
     <body>
         <div id="list-cathedras-form-container">

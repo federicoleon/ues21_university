@@ -42,6 +42,6 @@ class StringtilsSpec extends Specification {
             def md5 = StringUtils.getMD5(string)
 
         then:
-            "" == md5
+            "216b71af47663213eb64024e675e772a" == md5
     }
 }

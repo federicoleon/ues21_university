@@ -3,6 +3,10 @@
     <head>
         <meta name="layout" content="management"/>
         <title>Habilitar periodo de examen</title>
+        <script>
+            ga('set', 'page', '/enable-test-period');
+            ga('send', 'pageview');
+        </script>
     </head>
     <body>
         <div id="enable-test-period-form-container">

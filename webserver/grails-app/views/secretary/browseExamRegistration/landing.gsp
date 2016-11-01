@@ -3,6 +3,10 @@
     <head>
         <meta name="layout" content="management"/>
         <title>Consulta de inscripción a examen</title>
+        <script>
+            ga('set', 'page', '/browse-exam-registration');
+            ga('send', 'pageview');
+        </script>
     </head>
     <body>
         <div id="list-exam-registration-form-container">

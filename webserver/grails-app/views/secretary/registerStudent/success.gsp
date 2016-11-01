@@ -3,6 +3,11 @@
     <head>
         <meta name="layout" content="management"/>
         <title>Registrar nuevo alumno</title>
+
+        <script>
+            ga('set', 'page', '/register-student-success');
+            ga('send', 'pageview');
+        </script>
     </head>
     <body>
         <h1>Alumno registrado correctamente.</h1>

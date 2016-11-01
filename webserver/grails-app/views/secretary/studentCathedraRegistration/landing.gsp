@@ -3,6 +3,11 @@
     <head>
         <meta name="layout" content="management"/>
         <title>Registrar alumno en comisión</title>
+
+        <script>
+            ga('set', 'page', '/register-student-cathedra');
+            ga('send', 'pageview');
+        </script>
     </head>
     <body>
         <div id="teacher-list-cathedras-form-container">

@@ -18,13 +18,12 @@ class ExamTypeEnumSpec extends Specification {
             def known = ExamTypeEnum.values()
 
         then:
-            5 == known.size()
+            4 == known.size()
 
             [
                 ExamTypeEnum.FIRST,
                 ExamTypeEnum.SECOND,
                 ExamTypeEnum.RETRY,
-                ExamTypeEnum.INTEGRATOR,
                 ExamTypeEnum.FINAL
             ].containsAll(known)
     }
@@ -83,45 +82,27 @@ class ExamTypeEnumSpec extends Specification {
             "Recuperatorio" == examType.type()
     }
 
-    void "test exam type integrator"() {
-        when:
-            def examType = ExamTypeEnum.INTEGRATOR
-
-        then:
-            4 == examType.id()
-            "Integrador" == examType.type()
-    }
-
-    void "test exam type integrator by id"() {
-        when:
-            def examType = ExamTypeEnum.byId(4)
-
-        then:
-            4 == examType.id()
-            "Integrador" == examType.type()
-    }
-
     void "test exam type final"() {
         when:
             def examType = ExamTypeEnum.FINAL
 
         then:
-            5 == examType.id()
+            4 == examType.id()
             "Final" == examType.type()
     }
 
     void "test exam type final by id"() {
         when:
-            def examType = ExamTypeEnum.byId(5)
+            def examType = ExamTypeEnum.byId(4)
 
         then:
-            5 == examType.id()
+            4 == examType.id()
             "Final" == examType.type()
     }
 
     void "test exam type unknown by id"() {
         when:
-            def examType = ExamTypeEnum.byId(6)
+            def examType = ExamTypeEnum.byId(5)
 
         then:
             null == examType

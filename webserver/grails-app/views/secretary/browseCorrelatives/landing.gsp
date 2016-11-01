@@ -3,6 +3,11 @@
     <head>
         <meta name="layout" content="management"/>
         <title>Correlativas por carrera</title>
+
+        <script>
+            ga('set', 'page', '/browse-correlatives');
+            ga('send', 'pageview');
+        </script>
     </head>
     <body>
         <div id="correlatives-list-selector-container">

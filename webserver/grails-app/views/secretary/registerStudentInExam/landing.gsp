@@ -3,6 +3,11 @@
     <head>
         <meta name="layout" content="management"/>
         <title>Inscribir a mesa de examen</title>
+
+        <script>
+            ga('set', 'page', '/register-in-exam');
+            ga('send', 'pageview');
+        </script>
     </head>
     <body>
         <div id="test-periods-form-container">

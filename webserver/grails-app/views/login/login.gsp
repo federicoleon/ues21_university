@@ -3,6 +3,11 @@
     <head>
         <meta name="layout" content="management"/>
         <title>Acceso a Autogestión</title>
+
+        <script>
+            ga('set', 'page', '/login');
+            ga('send', 'pageview');
+        </script>
     </head>
     <body>
         <div id="login-container">
