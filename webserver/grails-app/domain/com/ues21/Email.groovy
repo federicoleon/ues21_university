@@ -8,6 +8,6 @@ class Email implements Serializable {
     static belongsTo = [person: Person]
 
     static constraints = {
-        address email: true
+        address(email: true, unique: true)
     }
 }

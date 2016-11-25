@@ -8,9 +8,9 @@ class CareersXStudent implements Serializable {
     Student student
 
     static constraints = {
-        status nullable: false
-        registrationDate nullable: false
-        career nullable: false
-        student nullable: false
+        status(nullable: false)
+        registrationDate(nullable: false)
+        career(nullable: false)
+        student(nullable: false, unique: ["career"])
     }
 }

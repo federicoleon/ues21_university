@@ -9,7 +9,8 @@ class Identification implements Serializable {
     static belongsTo = [person: Person]
 
     static constraints = {
-        type nullable: false, blank: false
-        number blank: false, nullable: false
+        type(nullable: false, blank: false)
+        //number(genericConstraint: true)
+        number(blank: false, nullable: false, unique: ["type"])
     }
 }

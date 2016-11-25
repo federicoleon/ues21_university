@@ -61,6 +61,8 @@ class SecretaryController {
                 email.person = student
                 student.addToEmails(email)
 
+                flow.student = student
+
                 if(!student.validate()) {
                     return error()
                 }
@@ -85,6 +87,8 @@ class SecretaryController {
                     cxs.student = student
                     if(cxs.validate()) {
                         cxs.save(flush: true, failOnError: true)
+                    }else{
+                        return error()
                     }
                 }
 
@@ -97,6 +101,7 @@ class SecretaryController {
         error {
             action {
                 return [
+                    student: flow.student,
                     error: true,
                     error_msg: "Ha ocurrido un error al intentar registrar el usuario"
                 ]

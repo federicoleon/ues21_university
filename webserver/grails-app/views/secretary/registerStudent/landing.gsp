@@ -44,7 +44,7 @@
                 <br>
                 <label>Número de documento:</label>
                 <g:textField name="idNumber" value="${student?.identification?.number}"/><br/>
-                <g:hasErrors bean="${student}" field="identification?.number">
+                <g:hasErrors bean="${student}" field="identification.number">
                     <g:eachError bean="${student}" field="identification?.number">
                         <p style="color: red;"><g:message error="Revisa el número de documento"/></p>
                     </g:eachError>
@@ -63,9 +63,19 @@
                  <br>
                 <label>Código de area:</label>
                 <g:textField name="phoneAreaCode"/><br/>
+                <g:hasErrors bean="${student}" field="phones[0].areaCode">
+                    <g:eachError bean="${student}" field="phones[0].areaCode">
+                        <p style="color: red;"><g:message error="El código de area no tiene un formato válido"/></p>
+                    </g:eachError>
+                </g:hasErrors>
 
                 <label>Número de teléfono:</label>
                 <g:textField name="phoneNumber"/><br/>
+                <g:hasErrors bean="${student}" field="phones[0].number">
+                    <g:eachError bean="${student}" field="phones[0].number">
+                        <p style="color: red;"><g:message error="El número de teléfono no tiene un formato válido"/></p>
+                    </g:eachError>
+                </g:hasErrors>
 
                 <g:submitButton name="register" class="button btn-green" value="Registrar" />
             </g:form>

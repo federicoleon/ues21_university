@@ -47,6 +47,14 @@
             </ul>
         </li>
 
-        <li><g:link controller="login" action="logout">Cerrar sesión</g:link></li>
+        <li><a  href="#"><i class="icon-camera"></i>${session.person.firstName + " " + session.person.lastName}</a>
+            <ul class="sub-menu">
+                <li><g:link controller="login" action="logout">Cerrar sesión</g:link></li>
+            </ul>
+        </li>
+        <g:if test="${session.person}">
+            
+            
+        </g:if>
     </ul>
 </nav>
