@@ -67,6 +67,7 @@ grails.project.dependency.resolution = {
         compile ':webflow:2.1.0'
         compile "org.grails.plugins:rendering:1.0.0"
         compile "org.grails.plugins:qr-code:0.1.4"
+        compile ":mail:1.0.7"
 
         // plugins needed at runtime but not for compilation
         runtime ":jquery:1.11.1"

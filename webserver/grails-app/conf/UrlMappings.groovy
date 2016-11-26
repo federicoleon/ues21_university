@@ -6,6 +6,8 @@ class UrlMappings {
 
         "/management/logout"(controller: "login", action: "logout")
 
+        "/account_recovery"(controller: "login", action: "accountRecovery")
+
         "/$controller/$action?/$id?(.$format)?" {
             constraints { }
         }

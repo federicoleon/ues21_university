@@ -7,7 +7,8 @@ class Student extends Person implements Serializable {
 
     String fileNumber
     String username
-    String password
+
+    static hasMany = [passwords: UserPassword]
 
     static mapping = {
         tablePerHierarchy false
@@ -16,7 +17,6 @@ class Student extends Person implements Serializable {
     static constraints = {
         fileNumber nullable: false, blank: false
         username nullable: false, blank: false
-        password nullable: false, blank: false
     }
 
     public String getRole() {

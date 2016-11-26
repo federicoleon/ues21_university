@@ -86,6 +86,21 @@ grails.hibernate.pass.readonly = false
 // configure passing read-only to OSIV session by default, requires "singleSession = false" OSIV mode
 grails.hibernate.osiv.readonly = false
 
+grails {
+    mail {
+        host = "smtp.gmail.com"
+        port = 465
+        username = "ues.sigloveintidos@gmail.com"
+        password = "universidad22"
+        props = [
+            "mail.smtp.auth":"true",
+            "mail.smtp.socketFactory.port":"465",
+            "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
+            "mail.smtp.socketFactory.fallback":"false"
+        ]
+    }
+}
+
 environments {
     development {
         grails.logging.jul.usebridge = true
@@ -95,5 +110,11 @@ environments {
 
     production {
         grails.logging.jul.usebridge = false
+    }
+}
+
+university {
+    login {
+        maxAttempts = 3
     }
 }

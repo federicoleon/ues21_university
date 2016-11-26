@@ -26,7 +26,7 @@ environments {
             driverClassName = "com.mysql.jdbc.Driver"
             dialect = "org.hibernate.dialect.MySQL5InnoDBDialect"
             username = "root"
-            password = ""
+            password = "root"
             properties {
                 validationQuery = "SELECT 1"
                 testOnBorrow = true

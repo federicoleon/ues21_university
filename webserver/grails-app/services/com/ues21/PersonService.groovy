@@ -2,14 +2,20 @@ package com.ues21
 
 import com.ues21.enums.*
 import com.ues21.utils.*
+import com.ues21.exceptions.UserLockedException
 
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.codehaus.groovy.grails.web.json.JSONArray
+import grails.gsp.PageRenderer
 
 import grails.transaction.Transactional
 
 @Transactional
 class PersonService {
+
+    def grailsApplication
+    def groovyPageRenderer
+    def mailService
 
     public boolean isValidDataForCreation(JSONObject data) {
         try {
@@ -95,37 +101,112 @@ class PersonService {
                 phone.number = it.number
                 phone.company = it.company
                 phone.person = p
-
                 p.addToPhones(phone)
             }
         }
 
         p.fileNumber = data.file_number
         p.username = data.username
-        p.password = StringUtils.getMD5(data.password)
 
-        if(p.validate()) {
-            p.save(flush: true, failOnError: true)
-            return p
+        UserPassword pass = new UserPassword()
+        pass.passwordHash = StringUtils.getMD5(data.password)
+        pass.failedLoginAttempts = 0
+        pass.status = 1
+        pass.person = p
+        p.addToPasswords(pass)
+
+        if(!p.validate()) {
+            return null
         }
+        p.save(flush: true, failOnError: true)
+        return p
+    }
+
+    public Person getByUsername(String username) {
+        Person result
+        
+        result = Student.findByUsername(username)
+        if(result) { return result }
+
+        result = Teacher.findByUsername(username)
+        if(result) { return result }
+
+        result = Secretary.findByUsername(username)
+        if(result) { return result }
+
+        result = Director.findByUsername(username)
+        if(result) { return result }
+
         return null
     }
 
-    public Person validateAuthentication(String username, String password) {
-        Person result
-        password = StringUtils.getMD5(password)
-        result = Student.findByUsernameAndPassword(username, password)
-        if(result) { return result }
+    public Person validateLogin(String username, String password) {
+        Person p = getByUsername(username)
+        if(!p) { return null }
 
-        result = Teacher.findByUsernameAndPassword(username, password)
-        if(result) { return result }
+        String pHash = getPasswordHash(password)
+        
+        boolean validLogin = false
+        boolean hasActivePassword = false
+        
+        UserPassword pass
+        p.passwords.each {
+            if(it.status == 1) {
+                pass = it
+                hasActivePassword = true
+            }
+            if(hasActivePassword && pHash.equals(it.passwordHash)) {
+                pass = it
+                validLogin = true
+            }
+        }
 
-        result = Secretary.findByUsernameAndPassword(username, password)
-        if(result) { return result }
+        // El usuario no tiene ninuna contraseña activa. Se encuentra bloqueado.
+        if(!hasActivePassword) {
+            return null
+        }
 
-        result = Director.findByUsernameAndPassword(username, password)
-        if(result) { return result }
+        if(validLogin) {
+            pass.failedLoginAttempts = 0
+            pass.save(flush: true)
+            return p
+        }
+
+        pass.failedLoginAttempts ++
+        if(pass.failedLoginAttempts >= grailsApplication.config.university.login.maxAttempts) {
+            UserPassword.withTransaction {
+                pass.status = 0
+                pass.save(flush: true)
+            }
+
+            List emails = []
+            p.emails.each {
+                if(it.status == 1) {
+                    emails << it.address
+                }
+            }
+            if(emails.size() > 0) {
+                def content = groovyPageRenderer.render(
+                    template: "/mails/userLocked",
+                    model: [
+                        firstName: p.firstName,
+                        recoverURL: "22.edu.ar:8080/account_recovery/${pass.id}"
+                    ]
+                )
+
+                mailService.sendMail {
+                    to emails.toArray()
+                    subject "UES22 - Cuenta bloqueada!"
+                    html(content)
+                }
+            }
+            throw new UserLockedException("User ${p.id} has been locked")
+        }
 
         return null
+    }
+
+    private String getPasswordHash(String password) {
+        return StringUtils.getMD5(password)
     }
 }

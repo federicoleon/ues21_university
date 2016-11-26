@@ -1,26 +1,34 @@
 package com.ues21
 
+import com.ues21.utils.*
+import com.ues21.exceptions.UserLockedException
+
 class LoginController {
 
     def personService
 
     def login() {
         String username = params.username
-        String password = params.password
+        String password = StringUtils.getMD5(params.password)
 
-        boolean invalidLoginData = false
-
-        if(username != null && password != null) {
-            Person person = personService.validateAuthentication(username, password)
-            if(person) {
-                session.person = person
-                redirect(controller: "management", action: "main")
-                return true
-            }else{
-                invalidLoginData = true
-            }
+        if(username == null || password == null) {
+            return [invalidLoginData: false]
         }
-        return [invalidLoginData: invalidLoginData]
+        session.person = null
+        
+        Person person
+        try {
+            person = personService.validateLogin(username, password)
+        } catch(UserLockedException e) {
+            redirect(action: "locked")
+            return false
+        }
+        if(!person) {
+            return [invalidLoginData: true]
+        }
+        session.person = person
+        redirect(controller: "management", action: "main")
+        return true
     }
 
     def logout() {
@@ -29,5 +37,13 @@ class LoginController {
         }
         redirect(action:'login')
         return false
+    }
+
+    def locked() {
+
+    }
+
+    def accountRecovery() {
+        
     }
 }
