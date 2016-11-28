@@ -1,6 +1,6 @@
 [
     {
-        "role": "secretary",
+        "role": "ROLE_SECRETARY",
         "username": "fedeleoncba",
         "password": "fede",
         "file_number": "33169682",

@@ -5,6 +5,8 @@ import com.ues21.enums.*
 import com.ues21.constants.Constants
 import org.codehaus.groovy.grails.web.context.ServletContextHolder
 
+import org.springframework.security.access.annotation.Secured
+
 class SecretaryController {
 
     def cathedraService
@@ -12,9 +14,8 @@ class SecretaryController {
     def careerService
     def subjectService
     def pdfRenderingService
-    
+
     def registerStudentFlow = {
-        
         init {
             action {
                 Map model = [

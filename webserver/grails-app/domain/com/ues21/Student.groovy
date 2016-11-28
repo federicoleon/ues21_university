@@ -1,12 +1,11 @@
 package com.ues21
 
-import com.ues21.enums.UserTypeEnum
+import com.ues21.enums.UserRoleEnum
 import com.ues21.enums.PhoneTypeEnum
 
 class Student extends Person implements Serializable {
 
     String fileNumber
-    String username
 
     static hasMany = [passwords: UserPassword]
 
@@ -16,11 +15,10 @@ class Student extends Person implements Serializable {
 
     static constraints = {
         fileNumber nullable: false, blank: false
-        username nullable: false, blank: false
     }
 
     public String getRole() {
-        return UserTypeEnum.STUDENT.role()
+        return UserRoleEnum.STUDENT.role()
     }
 
     public String getFullName() {
@@ -45,7 +43,6 @@ class Student extends Person implements Serializable {
             }
         }
         vc << "TITLE:${fileNumber}\n"
-        vc << "URL:http://22.edu.ar:8080/?username=${fileNumber}"
         vc << "REV:${creationDate.getTime()}\n"
         vc << "END:VCARD"
         return vc.toString()

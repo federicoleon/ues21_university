@@ -4,7 +4,7 @@ class AuthenticationFilters {
         checkAuthentication(controller: "login", invert: true) {
             before = {
                 if (!session.person) {
-                    redirect(controller: "login", action: "login")
+                    redirect(controller: "login", action: "auth")
                     return false
                 }
             }

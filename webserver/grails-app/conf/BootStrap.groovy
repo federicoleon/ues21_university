@@ -11,6 +11,7 @@ class BootStrap {
 
     def grailsApplication
     def personService
+    def springSecurityService
 
     def init = { servletContext ->
 
@@ -41,12 +42,21 @@ class BootStrap {
     }
 
     private void loadDatabaseMocks() {
+        loadRoles()
         loadExamTypes()
         loadClassRooms()
         loadCathedraPeriods()
         loadCareers()
         loadCathedras()
         loadMockedUsers()
+    }
+
+    private void loadRoles() {
+        if(Role.list().size() == 0){
+            UserRoleEnum.listAll().each { userType ->
+                new Role(authority: userType.role()).save()
+            }
+        }
     }
 
     private void loadExamTypes() {

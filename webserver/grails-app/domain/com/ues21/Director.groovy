@@ -1,11 +1,10 @@
 package com.ues21
 
-import com.ues21.enums.UserTypeEnum
+import com.ues21.enums.UserRoleEnum
 
 class Director extends Person implements Serializable {
 
     String fileNumber
-    String username
 
     static hasMany = [passwords: UserPassword]
 
@@ -15,10 +14,9 @@ class Director extends Person implements Serializable {
 
     static constraints = {
         fileNumber nullable: false, blank: false
-        username nullable: false, blank: false
     }
 
     public String getRole() {
-        return UserTypeEnum.DIRECTOR.role()
+        return UserRoleEnum.DIRECTOR.role()
     }
 }

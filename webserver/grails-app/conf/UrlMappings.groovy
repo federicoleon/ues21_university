@@ -2,7 +2,7 @@ class UrlMappings {
 
     static mappings = {
 
-        "/"(controller: "login", action: "login")
+        "/"(controller: "login", action: "auth")
 
         "/management/logout"(controller: "login", action: "logout")
 

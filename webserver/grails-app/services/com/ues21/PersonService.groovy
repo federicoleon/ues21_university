@@ -6,6 +6,7 @@ import com.ues21.exceptions.UserLockedException
 
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.codehaus.groovy.grails.web.json.JSONArray
+import org.codehaus.groovy.grails.web.util.WebUtils
 import grails.gsp.PageRenderer
 
 import grails.transaction.Transactional
@@ -16,6 +17,8 @@ class PersonService {
     def grailsApplication
     def groovyPageRenderer
     def mailService
+    def springSecurityService
+    def passwordEncoder
 
     public boolean isValidDataForCreation(JSONObject data) {
         try {
@@ -57,20 +60,20 @@ class PersonService {
         Person p
 
         switch(data.role) {
-            case UserTypeEnum.TEACHER.role():
+            case UserRoleEnum.TEACHER.role():
                 p = new Teacher()
                 break
-            case UserTypeEnum.STUDENT.role():
+            case UserRoleEnum.STUDENT.role():
                 p = new Student()
                 break
-            case UserTypeEnum.DIRECTOR.role():
+            case UserRoleEnum.DIRECTOR.role():
                 p = new Director()
                 break
-            case UserTypeEnum.SECRETARY.role():
+            case UserRoleEnum.SECRETARY.role():
                 p = new Secretary()
                 break
             default:
-                throw new Exception("Error mocking new user: Unrecognized user role ${user.role}")
+                throw new Exception("Error mocking new user: Unrecognized user role '${data.role}'")
                 break
         }
         p.firstName = data.person_data.first_name
@@ -106,58 +109,61 @@ class PersonService {
         }
 
         p.fileNumber = data.file_number
-        p.username = data.username
-
-        UserPassword pass = new UserPassword()
-        pass.passwordHash = StringUtils.getMD5(data.password)
-        pass.failedLoginAttempts = 0
-        pass.status = 1
-        pass.person = p
-        p.addToPasswords(pass)
 
         if(!p.validate()) {
             return null
         }
         p.save(flush: true, failOnError: true)
+
+        User user = new User()
+        user.person = p
+        user.username = data.username
+        user.password = data.password
+        user.enabled = true
+        user.accountExpired = false
+        user.accountLocked = false
+        user.passwordExpired = false
+
+        user.save(flush: true, failOnError: true)
+
+        UserPassword pass = new UserPassword()
+        pass.passwordHash = user.password
+        pass.failedLoginAttempts = 0
+        pass.status = UserPassword.STATUS_ACTIVE
+        pass.person = p
+        p.addToPasswords(pass)
+
+        p.save(flush: true, failOnError: true)
+
+        def role = new UserRole(user: user, role: Role.findWhere(authority: data.role)).save(flush: true, failOnError: true)
+
         return p
     }
 
-    public Person getByUsername(String username) {
-        Person result
-        
-        result = Student.findByUsername(username)
-        if(result) { return result }
-
-        result = Teacher.findByUsername(username)
-        if(result) { return result }
-
-        result = Secretary.findByUsername(username)
-        if(result) { return result }
-
-        result = Director.findByUsername(username)
-        if(result) { return result }
-
-        return null
+    private boolean isValidPassword(User user, String password) {
+        if(!user || !password) {
+            return false
+        }
+        return passwordEncoder.isPasswordValid(user.password, password, null)
     }
 
-    public Person validateLogin(String username, String password) {
-        Person p = getByUsername(username)
+    public User validateLogin(String username, String password) {
+        User user = User.findByUsername(username)
+        if(!user) {
+            return null
+        }
+        Person p = user.person
         if(!p) { return null }
 
-        String pHash = getPasswordHash(password)
-        
-        boolean validLogin = false
+        boolean isValidPassword = isValidPassword(user, password)
+
         boolean hasActivePassword = false
         
         UserPassword pass
         p.passwords.each {
-            if(it.status == 1) {
+            if(it.status == UserPassword.STATUS_ACTIVE) {
                 pass = it
                 hasActivePassword = true
-            }
-            if(hasActivePassword && pHash.equals(it.passwordHash)) {
-                pass = it
-                validLogin = true
             }
         }
 
@@ -166,18 +172,19 @@ class PersonService {
             return null
         }
 
-        if(validLogin) {
+        if(isValidPassword) {
             pass.failedLoginAttempts = 0
             pass.save(flush: true)
-            return p
+            
+            // Store loggued person in Session:
+            WebUtils.retrieveGrailsWebRequest().session?.person = p
+            return user
         }
 
         pass.failedLoginAttempts ++
         if(pass.failedLoginAttempts >= grailsApplication.config.university.login.maxAttempts) {
-            UserPassword.withTransaction {
-                pass.status = 0
-                pass.save(flush: true)
-            }
+
+            lockUser(user, pass)
 
             List emails = []
             p.emails.each {
@@ -193,20 +200,37 @@ class PersonService {
                         recoverURL: "22.edu.ar:8080/account_recovery/${pass.id}"
                     ]
                 )
-
+                /*
                 mailService.sendMail {
                     to emails.toArray()
                     subject "UES22 - Cuenta bloqueada!"
                     html(content)
                 }
+                */
             }
-            throw new UserLockedException("User ${p.id} has been locked")
+            return user
         }
 
         return null
     }
 
+    private void lockUser(User user, UserPassword userPassword) {
+        if(!user || !userPassword) {
+            return
+        }
+
+        User.withTransaction {
+            user.accountLocked = true
+            user.save(flush: true)
+        }
+
+        UserPassword.withTransaction {
+            userPassword.status = UserPassword.STATUS_LOCKED
+            userPassword.save(flush: true)
+        }
+    }
+
     private String getPasswordHash(String password) {
-        return StringUtils.getMD5(password)
+        return springSecurityService?.passwordEncoder ? springSecurityService.encodePassword(password) : password
     }
 }

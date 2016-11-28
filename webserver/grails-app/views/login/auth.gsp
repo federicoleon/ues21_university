@@ -12,7 +12,7 @@
     <body>
         <div id="login-container">
             <h1>Ingresa a tu autogestión</h1>
-            <g:form name="loginForm" controller="login" action="login">
+            <g:form name="loginForm" controller="login" action="auth">
                 <fieldset>
                     <ol>
                         <li class="form-row">

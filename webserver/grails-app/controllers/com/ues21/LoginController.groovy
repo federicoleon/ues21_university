@@ -7,26 +7,26 @@ class LoginController {
 
     def personService
 
-    def login() {
+    def auth() {
         String username = params.username
-        String password = StringUtils.getMD5(params.password)
+        String password = params.password
 
         if(username == null || password == null) {
             return [invalidLoginData: false]
         }
         session.person = null
         
-        Person person
-        try {
-            person = personService.validateLogin(username, password)
-        } catch(UserLockedException e) {
+        User user = personService.validateLogin(username, password)
+        
+        if(!user) {
+            return [invalidLoginData: true]
+        }
+
+        if(user.accountLocked) {
             redirect(action: "locked")
             return false
         }
-        if(!person) {
-            return [invalidLoginData: true]
-        }
-        session.person = person
+        
         redirect(controller: "management", action: "main")
         return true
     }
@@ -35,7 +35,7 @@ class LoginController {
         if(session.person != null) {
             session.person = null
         }
-        redirect(action:'login')
+        redirect(action:'auth')
         return false
     }
 

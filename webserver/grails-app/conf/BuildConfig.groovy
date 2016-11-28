@@ -67,6 +67,8 @@ grails.project.dependency.resolution = {
         compile ':webflow:2.1.0'
         compile "org.grails.plugins:rendering:1.0.0"
         compile "org.grails.plugins:qr-code:0.1.4"
+        compile ':spring-security-core:2.0-RC4'
+        compile ':spring-security-ui:1.0-RC2'
         compile ":mail:1.0.7"
 
         // plugins needed at runtime but not for compilation
