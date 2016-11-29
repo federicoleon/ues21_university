@@ -43,6 +43,8 @@ grails.project.dependency.resolution = {
 
     dependencies {
 
+        build 'com.google.guava:guava:18.0'
+
         runtime 'mysql:mysql-connector-java:5.1.29'
 
         test "org.grails:grails-datastore-test-support:1.0.2-grails-2.4"

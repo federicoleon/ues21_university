@@ -104,12 +104,16 @@ grails {
 environments {
     development {
         grails.logging.jul.usebridge = true
+        baseURL = "http://22.edu.ar:8080"
     }
 
-    test {}
+    test {
+        baseURL = "http://22.edu.ar:8080"
+    }
 
     production {
         grails.logging.jul.usebridge = false
+        baseURL = "http://federicoleon.com"
     }
 }
 

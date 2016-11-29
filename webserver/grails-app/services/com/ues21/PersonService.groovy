@@ -161,7 +161,7 @@ class PersonService {
                 template: "/mails/userLocked",
                 model: [
                     firstName: user.person.firstName,
-                    recoverURL: "http://22.edu.ar:8080/account_recovery/${token.token}".toString()
+                    recoverURL: "${grailsApplication.config.baseURL}/account_recovery/${token.token}".toString()
                 ]
             )
             mailService.sendMail {
@@ -329,7 +329,7 @@ class PersonService {
             template: "/mails/forgotPassword",
             model: [
                 firstName: user.person.firstName,
-                recoverURL: "http://22.edu.ar:8080/account_recovery/${token.token}".toString()
+                recoverURL: "${grailsApplication.config.baseURL}/account_recovery/${token.token}".toString()
             ]
         )
 

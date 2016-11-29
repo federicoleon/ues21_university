@@ -52,8 +52,27 @@ environments {
 
     production {
         dataSource {
-            dbCreate = "create-drop"
-            url = "jdbc:h2:mem:testDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
+            dbCreate = "update"
+            url = "jdbc:mysql://127.0.0.1:3306/university?useUnicode=yes&characterEncoding=UTF-8"
+            pooled = true
+            jmxExport = true
+            driverClassName = "com.mysql.jdbc.Driver"
+            dialect = "org.hibernate.dialect.MySQL5InnoDBDialect"
+            username = "ues22"
+            password = "theues22pass"
+            properties {
+                validationQuery = "SELECT 1"
+                testOnBorrow = true
+                testWhileIdle = true
+                testOnReturn = false
+                maxActive = 50
+                maxIdle = 25
+                minIdle = 5
+                initialSize = 5
+                minEvictableIdleTimeMillis = 1800000
+                timeBetweenEvictionRunsMillis = 1800000
+                maxWait = 10000
+            }
         }
     }
 }
