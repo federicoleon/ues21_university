@@ -7,17 +7,21 @@ import org.codehaus.groovy.grails.web.json.JSONObject
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.util.WebUtils
 import grails.gsp.PageRenderer
+import org.apache.log4j.Logger
 
 import grails.transaction.Transactional
 
 @Transactional
 class PersonService {
 
+    private static def log = Logger.getLogger(PersonService.class)
+
     def grailsApplication
     def groovyPageRenderer
     def mailService
     
     public Person createFromGeneric(JSONObject data) {
+        log.info("About to create a new person with data ${data}")
         Person p
 
         switch(data.role) {
@@ -74,7 +78,7 @@ class PersonService {
                 return p
             }
         } catch(Exception e) {
-            println e
+            log.error("Error creating new person", e)
             return p
         }
 
@@ -98,6 +102,8 @@ class PersonService {
         user.addToPasswords(pass)
 
         user.save(flush:true, failOnError: true)
+
+        log.info("New person successfully created ${p}")
         
         return p
     }
@@ -161,7 +167,7 @@ class PersonService {
                 template: "/mails/userLocked",
                 model: [
                     firstName: user.person.firstName,
-                    recoverURL: "${grailsApplication.config.baseURL}/account_recovery/${token.token}".toString()
+                    recoverURL: "${grailsApplication.config.serverBaseURL}/account_recovery/${token.token}".toString()
                 ]
             )
             mailService.sendMail {
@@ -329,7 +335,7 @@ class PersonService {
             template: "/mails/forgotPassword",
             model: [
                 firstName: user.person.firstName,
-                recoverURL: "${grailsApplication.config.baseURL}/account_recovery/${token.token}".toString()
+                recoverURL: "${grailsApplication.config.serverBaseURL}/account_recovery/${token.token}".toString()
             ]
         )
 

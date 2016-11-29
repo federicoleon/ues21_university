@@ -3,7 +3,7 @@ import org.apache.log4j.DailyRollingFileAppender
 import org.apache.log4j.PatternLayout
 import org.apache.log4j.Level
 
-log4j.main = {
+log4j = {
 
     info  'com.ues21'
     
