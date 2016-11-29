@@ -41,14 +41,27 @@ class BootStrap {
     def destroy = {
     }
 
+    private boolean isDBAlreadyLoaded() {
+        List roles = Role.list()
+        List persons = Subject.list()
+        List users = User.list()
+        List careers = Career.list()
+        List subjects = Subject.list()
+
+        return (roles.size > 0 && persons.size() > 0 && users.size > 0 && careers.size > 0 && subjects.size > 0)
+    }
+
     private void loadDatabaseMocks() {
-        loadRoles()
-        loadExamTypes()
-        loadClassRooms()
-        loadCathedraPeriods()
-        loadCareers()
-        loadCathedras()
-        loadMockedUsers()
+        boolean dbMocked = isDBAlreadyLoaded()
+        if(!dbMocked) {
+            loadRoles()
+            loadExamTypes()
+            loadClassRooms()
+            loadCathedraPeriods()
+            loadCareers()
+            loadCathedras()
+            loadMockedUsers()
+        }
     }
 
     private void loadRoles() {
