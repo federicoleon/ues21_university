@@ -4,7 +4,7 @@
         <meta name="layout" content="management"/>
         <title>Consulta de inscripción a examen</title>
         <script>
-            ga('set', 'page', '/browse-exam-registration');
+            ga('set', 'page', '/secretary/browse-exam-registration');
             ga('send', 'pageview');
         </script>
     </head>

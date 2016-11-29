@@ -5,7 +5,7 @@
         <title>Inscribir alumno en carrera</title>
 
         <script>
-            ga('set', 'page', '/register-in-career');
+            ga('set', 'page', '/secretary/register-in-career');
             ga('send', 'pageview');
         </script>
     </head>

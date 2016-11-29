@@ -4,7 +4,7 @@
         <meta name="layout" content="management"/>
         <title>Habilitar periodo de examen</title>
         <script>
-            ga('set', 'page', '/enable-test-period');
+            ga('set', 'page', '/secretary/enable-test-period');
             ga('send', 'pageview');
         </script>
     </head>

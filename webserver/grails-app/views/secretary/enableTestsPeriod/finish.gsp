@@ -5,7 +5,7 @@
         <title>Registrar nuevo alumno</title>
 
         <script>
-            ga('set', 'page', '/enable-test-period-success');
+            ga('set', 'page', '/secretary/enable-test-period-success');
             ga('send', 'pageview');
         </script>
     </head>

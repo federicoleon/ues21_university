@@ -5,7 +5,7 @@
         <title>Registrar alumno en comisión</title>
 
         <script>
-            ga('set', 'page', '/register-student-cathedra');
+            ga('set', 'page', '/secretary/register-student-cathedra');
             ga('send', 'pageview');
         </script>
     </head>

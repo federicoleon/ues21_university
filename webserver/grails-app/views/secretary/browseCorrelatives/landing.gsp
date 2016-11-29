@@ -5,7 +5,7 @@
         <title>Correlativas por carrera</title>
 
         <script>
-            ga('set', 'page', '/browse-correlatives');
+            ga('set', 'page', '/secretary/browse-correlatives');
             ga('send', 'pageview');
         </script>
     </head>

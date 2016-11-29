@@ -5,7 +5,7 @@
         <title>Listado de comisiones</title>
 
         <script>
-            ga('set', 'page', '/browse-cathedras');
+            ga('set', 'page', '/secretary/browse-cathedras');
             ga('send', 'pageview');
         </script>
     </head>

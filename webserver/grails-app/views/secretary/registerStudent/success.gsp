@@ -5,7 +5,7 @@
         <title>Registrar nuevo alumno</title>
 
         <script>
-            ga('set', 'page', '/register-student-success');
+            ga('set', 'page', '/secretary/register-student-success');
             ga('send', 'pageview');
         </script>
     </head>

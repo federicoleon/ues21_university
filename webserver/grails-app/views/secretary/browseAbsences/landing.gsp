@@ -5,7 +5,7 @@
         <title>Consulta de inasistencias</title>
 
         <script>
-            ga('set', 'page', '/browse-absences');
+            ga('set', 'page', '/secretary/browse-absences');
             ga('send', 'pageview');
         </script>
     </head>

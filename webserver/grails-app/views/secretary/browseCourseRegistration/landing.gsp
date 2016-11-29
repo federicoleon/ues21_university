@@ -5,7 +5,7 @@
         <title>Consulta de inscripción a cursado</title>
 
         <script>
-            ga('set', 'page', '/browse-course-registration');
+            ga('set', 'page', '/secretary/browse-course-registration');
             ga('send', 'pageview');
         </script>
     </head>

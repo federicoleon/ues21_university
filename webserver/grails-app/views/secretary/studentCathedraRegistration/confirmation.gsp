@@ -5,7 +5,7 @@
         <title>Inscripción completa</title>
 
         <script>
-            ga('set', 'page', '/register-student-cathedra-success');
+            ga('set', 'page', '/secretary/register-student-cathedra-success');
             ga('send', 'pageview');
         </script>
     </head>

@@ -5,7 +5,7 @@
         <title>Inscribir a mesa de examen</title>
 
         <script>
-            ga('set', 'page', '/register-in-exam-success');
+            ga('set', 'page', '/secretary/register-in-exam-success');
             ga('send', 'pageview');
         </script>
     </head>
