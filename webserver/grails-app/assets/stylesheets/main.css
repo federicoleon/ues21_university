@@ -96,6 +96,11 @@ input[type=submit] {
     background-color: #FFBABA;
 }
 
+.error-input-text {
+    border-color: red;
+    border-width: thin;
+}
+
 .button {
     border: none;
     color: white;
@@ -212,6 +217,10 @@ input[type=submit] {
     font-size: 13px;
     color: #585858;
     padding: 10px;
+}
+
+#login-container .main-message {
+    text-align: justify;
 }
 
 #main-container #login-container input[type=submit] {
@@ -441,6 +450,40 @@ nav{
     text-align: center;
 }
 
+.recover_section {
+    overflow: hidden;
+}
+
+.recover_section .content-left {
+    float: left;
+    height: 25px;
+    width: 50%
+}
+
+.recover_section .content-left span {
+    position: absolute;
+    top: -1px;
+    left: 22px;
+}
+
+.recover_section .content-left input {
+    width: auto !important;
+}
+
+.recover_section .content-right {
+    float: right;
+    text-align: right;
+    height: 25px;
+    position: relative;
+    width: 50%
+}
+
+.recover_section .content-right a {
+    position: absolute;
+    top: 5px;
+    right: 0px;
+}
+
 #report-container {
     width: 500px;
     color: #000000;
@@ -489,3 +532,4 @@ nav{
 #report-container #body {
 
 }
+

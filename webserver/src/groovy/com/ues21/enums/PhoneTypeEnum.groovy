@@ -24,6 +24,6 @@ public enum PhoneTypeEnum {
         if(type == null) {
             return null
         }
-        return values().find { it.type.equalsIgnoreCase(type.trim().toLowerCase())}
+        return values().find { it.type.equalsIgnoreCase(type)}
     }
 }

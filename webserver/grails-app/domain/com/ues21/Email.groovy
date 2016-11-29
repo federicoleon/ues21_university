@@ -2,12 +2,14 @@ package com.ues21
 
 class Email implements Serializable {
 
+    public transient final static int STATUS_ACTIVE = 1
+
     String address
-    int status = 1
+    int status = STATUS_ACTIVE
 
     static belongsTo = [person: Person]
 
     static constraints = {
-        address(email: true, unique: true)
+        address(blank: false, email: true, unique: true)
     }
 }

@@ -10,7 +10,6 @@ class Identification implements Serializable {
 
     static constraints = {
         type(nullable: false, blank: false)
-        //number(genericConstraint: true)
         number(blank: false, nullable: false, unique: ["type"])
     }
 }

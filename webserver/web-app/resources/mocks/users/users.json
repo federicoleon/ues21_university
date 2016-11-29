@@ -1,31 +1,30 @@
 [
-    {
-        "role": "ROLE_SECRETARY",
-        "username": "fedeleoncba",
-        "password": "fede",
-        "file_number": "33169682",
-        "person_data": {
-            "first_name": "Fede",
-            "last_name": "León",
-            "identification": {
-                "type": "DNI",
-                "number": "12345678"
-            },
-            "emails": [
-                {
-                    "address": "federico.leon@gmail.com",
-                    "status": 1
-                }
-            ],
-            "phones": [
-                {
-                    "type": "celular",
-                    "area_code": 351,
-                    "number": 153583213,
-                    "status": 1,
-                    "company": "Personal"
-                }
-            ]
+  {
+    "role": "ROLE_SECRETARY",
+    "username": "fedeleoncba",
+    "password": "fede",
+    "file_number": "33169682",
+    "person_data": {
+      "first_name": "Fede",
+      "last_name": "León",
+      "identification": {
+        "type": "DNI",
+        "number": "12345678"
+      },
+      "emails": [
+        {
+          "address": "fedeleon.cba@gmail.com"
         }
+      ],
+      "phones": [
+        {
+          "type": "celular",
+          "area_code": 351,
+          "number": 153583213,
+          "status": 1,
+          "company": "Personal"
+        }
+      ]
     }
+  }
 ]

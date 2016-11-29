@@ -49,17 +49,4 @@ class LoginSpec extends GebReportingSpec {
 
             errors[0].text() == "Usuario o contraseña incorrectos"
     }
-
-    def "login ok"() {
-        given: "Go to the Login page"
-            to LoginPage
-
-        when: "Try to access with wrong data"
-            form.username = "fedeleoncba"
-            form.password = "fede"
-            loginButton.click()
-
-        then: "Check we are inside management panel"
-            at MainPage
-    }
 }

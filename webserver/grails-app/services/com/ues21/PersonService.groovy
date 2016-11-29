@@ -2,7 +2,6 @@ package com.ues21
 
 import com.ues21.enums.*
 import com.ues21.utils.*
-import com.ues21.exceptions.UserLockedException
 
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.codehaus.groovy.grails.web.json.JSONArray
@@ -17,46 +16,8 @@ class PersonService {
     def grailsApplication
     def groovyPageRenderer
     def mailService
-    def springSecurityService
-    def passwordEncoder
-
-    public boolean isValidDataForCreation(JSONObject data) {
-        try {
-            if(!data) { return false }
-
-            if(!data.role) { return false }
-
-            if(!data.file_number) { return false }
-            if(!data.username) { return false }
-            if(!data.password) { return false }
-
-            JSONObject personData = data.person_data
-
-            if(!personData.first_name) { return false }
-            if(!personData.last_name) { return false }
-
-            JSONObject identification = personData.identification
-            if(!identification.type) { return false }
-            if(!identification.number) { return false }
-
-            JSONArray emails = personData.emails
-            emails.each { email ->
-                if(!email.address || !email.status) { return false}
-            }
-
-            JSONArray phones = personData.phones
-            phones.each { phone ->
-                if(!phone.type || !phone.areaCode || !phone.number) { return false}
-            }
-        } catch(Exception e) {
-            return false
-        }
-    }
     
     public Person createFromGeneric(JSONObject data) {
-        if(!isValidDataForCreation(data)) {
-            return null
-        }
         Person p
 
         switch(data.role) {
@@ -89,9 +50,7 @@ class PersonService {
         data.person_data.emails?.each {
             Email email = new Email()
             email.address = it.address
-            email.status = it.status
             email.person = p
-            
             p.addToEmails(email)
         }
 
@@ -102,7 +61,7 @@ class PersonService {
                 phone.type = phoneType.id()
                 phone.areaCode = it.area_code
                 phone.number = it.number
-                phone.company = it.company
+                phone.company = it.company ?: ""
                 phone.person = p
                 p.addToPhones(phone)
             }
@@ -110,41 +69,37 @@ class PersonService {
 
         p.fileNumber = data.file_number
 
-        if(!p.validate()) {
-            return null
+        try {
+            if(!p.save(flush: true, failOnError: true)) {
+                return p
+            }
+        } catch(Exception e) {
+            println e
+            return p
         }
-        p.save(flush: true, failOnError: true)
 
         User user = new User()
         user.person = p
         user.username = data.username
-        user.password = data.password
+        user.password = getPasswordHash(data.password)
         user.enabled = true
         user.accountExpired = false
         user.accountLocked = false
         user.passwordExpired = false
 
-        user.save(flush: true, failOnError: true)
+        Role role = Role.findByAuthority(data.role)
+        user.addToRoles(role)
 
         UserPassword pass = new UserPassword()
         pass.passwordHash = user.password
         pass.failedLoginAttempts = 0
         pass.status = UserPassword.STATUS_ACTIVE
-        pass.person = p
-        p.addToPasswords(pass)
+        pass.user = user
+        user.addToPasswords(pass)
 
-        p.save(flush: true, failOnError: true)
-
-        def role = new UserRole(user: user, role: Role.findWhere(authority: data.role)).save(flush: true, failOnError: true)
-
+        user.save(flush:true, failOnError: true)
+        
         return p
-    }
-
-    private boolean isValidPassword(User user, String password) {
-        if(!user || !password) {
-            return false
-        }
-        return passwordEncoder.isPasswordValid(user.password, password, null)
     }
 
     public User validateLogin(String username, String password) {
@@ -152,15 +107,13 @@ class PersonService {
         if(!user) {
             return null
         }
-        Person p = user.person
-        if(!p) { return null }
 
         boolean isValidPassword = isValidPassword(user, password)
 
         boolean hasActivePassword = false
         
         UserPassword pass
-        p.passwords.each {
+        user.passwords.each {
             if(it.status == UserPassword.STATUS_ACTIVE) {
                 pass = it
                 hasActivePassword = true
@@ -175,9 +128,8 @@ class PersonService {
         if(isValidPassword) {
             pass.failedLoginAttempts = 0
             pass.save(flush: true)
-            
-            // Store loggued person in Session:
-            WebUtils.retrieveGrailsWebRequest().session?.person = p
+            // Guardamos la persona logueada en la sesión actual.
+            WebUtils.retrieveGrailsWebRequest().session?.user = user
             return user
         }
 
@@ -186,32 +138,144 @@ class PersonService {
 
             lockUser(user, pass)
 
-            List emails = []
-            p.emails.each {
-                if(it.status == 1) {
-                    emails << it.address
-                }
+            PasswordResetToken token = PasswordResetToken.findByUser(user)
+            if(!token) {
+                token = new PasswordResetToken()
+                token.user = user
             }
-            if(emails.size() > 0) {
-                def content = groovyPageRenderer.render(
-                    template: "/mails/userLocked",
-                    model: [
-                        firstName: p.firstName,
-                        recoverURL: "22.edu.ar:8080/account_recovery/${pass.id}"
-                    ]
-                )
-                /*
-                mailService.sendMail {
-                    to emails.toArray()
-                    subject "UES22 - Cuenta bloqueada!"
-                    html(content)
-                }
-                */
+            token.token = StringUtils.getMD5(DateUtils.getCurrentDateMV().concat(user.username)).toString()
+
+            try {
+                token.save(flush: true, failOnError: true)
+            } catch(Exception e) {
+                println e
+                return null
+            }
+
+            List emails = getEmails(user.person)
+            if(emails.size() == 0) {
+                return null
+            }
+
+            def content = groovyPageRenderer.render(
+                template: "/mails/userLocked",
+                model: [
+                    firstName: user.person.firstName,
+                    recoverURL: "http://22.edu.ar:8080/account_recovery/${token.token}".toString()
+                ]
+            )
+            mailService.sendMail {
+                to emails.toArray()
+                subject "UES22 - Cuenta bloqueada!"
+                html(content)
             }
             return user
         }
 
         return null
+    }
+
+    public boolean isValidPassword(User user, String password) {
+        if(!user || !password) {
+            return false
+        }
+        return StringUtils.getMD5(password).equals(user.password)
+    }
+
+    public User changePassword(User user, String password, String newPassword, String confirmPassword, boolean fromToken) {
+        if(!user) {
+            return null
+        }
+
+        user.clearErrors()
+
+        if(!password || !newPassword || !confirmPassword) {
+            user.errors.rejectValue("password", "change.password.missing_information")
+            return user
+        }
+
+        if(!password) {
+            user.errors.rejectValue("password", "change.password.currentPassword.empty")
+            return user
+        }
+
+        if(!fromToken && !isValidPassword(user, password)) {
+            user.errors.rejectValue("password", "change.password.currentPassword.wrong")
+            return user
+        }
+
+        if(!newPassword) {
+            user.errors.rejectValue("password", "change.password.newPassword.empty")
+            return user
+        }
+
+        if(!confirmPassword) {
+            user.errors.rejectValue("password", "change.password.confirmPassword.empty")
+            return user
+        }
+
+        if(newPassword != confirmPassword) {
+            user.errors.rejectValue("password", "change.password.newPasswordsDontMatch")
+            return user
+        }
+
+        String newPasswordHash = getPasswordHash(newPassword)
+
+        List oldPasswords = UserPassword.withCriteria {
+            eq("user", user)
+        }
+
+        boolean passwordUsed = false
+        oldPasswords.each { old ->
+            if(old.passwordHash == newPasswordHash) {
+                passwordUsed = true
+            }
+        }
+        if(passwordUsed) {
+            user.errors.rejectValue("password", "change.password.newPasswordsUsedBefore")
+            return user
+        }
+
+        user = User.get(user.id)
+        if(!user) {
+            return null
+        }
+
+        user.password = newPasswordHash
+        if(!user.validate()) {
+            // Si hay errores, no hay necesidad de seguir procesando.
+            return user
+        }
+
+        // Desbloqueo el usuario.
+        user.accountLocked = false
+
+        user.save(flush: true, failOnError: true)
+
+        oldPasswords.each { old ->
+            if(old.status in [UserPassword.STATUS_ACTIVE, UserPassword.STATUS_LOCKED]) {
+                old.status = UserPassword.STATUS_INACTIVE
+                old.save(flush: true, failOnError: true)
+            }
+        }
+
+        UserPassword newPass = new UserPassword()
+        newPass.user = user
+        newPass.passwordHash = user.password
+        newPass.save(flush: true, failOnError: true)
+
+        return user
+    }
+
+    private List getEmails(Person person) {
+        List emails = []
+        if(!person) { return emails }
+        person.emails.each {
+            if(it.status == Email.STATUS_ACTIVE) {
+                emails << it.address
+            }
+        }
+        return emails
     }
 
     private void lockUser(User user, UserPassword userPassword) {
@@ -230,7 +294,71 @@ class PersonService {
         }
     }
 
+    public boolean unlockAccount(String tokenId) {
+        return false
+    }
+
     private String getPasswordHash(String password) {
-        return springSecurityService?.passwordEncoder ? springSecurityService.encodePassword(password) : password
+        return StringUtils.getMD5(password)
+    }
+
+    public void sendRetrievePasswordEmail(String username) {
+        User user = User.findByUsername(username)
+        if(!user) { return }
+
+        PasswordResetToken token = PasswordResetToken.findByUser(user)
+        if(!token) {
+            token = new PasswordResetToken()
+            token.user = user
+        }
+
+        token.token = StringUtils.getMD5(DateUtils.getCurrentDateMV().concat(user.username)).toString()
+
+        try {
+            token.save(flush: true, failOnError: true)
+        } catch(Exception e) {
+            return
+        }
+
+        List emails = getEmails(user.person)
+        if(emails.size() == 0) {
+            return
+        }
+
+        def email = groovyPageRenderer.render(
+            template: "/mails/forgotPassword",
+            model: [
+                firstName: user.person.firstName,
+                recoverURL: "http://22.edu.ar:8080/account_recovery/${token.token}".toString()
+            ]
+        )
+
+        mailService.sendMail {
+            to emails.toArray()
+            subject "UES22 - Recuperar contraseña"
+            html(email)
+        }
+    }
+
+    public boolean validateRetrievePasswordToken(String tokenId) {
+        if(!tokenId) { return false }
+        PasswordResetToken token = PasswordResetToken.findByToken(tokenId)
+        if(!token) {
+            return false
+        }
+        return !token.isExpired()
+    }
+
+    public User processPasswordChangeByToken(String tokenId, String newPassword, String confirmPassword) {
+        if(!tokenId || !newPassword || !confirmPassword) { return null }
+        
+        PasswordResetToken token = PasswordResetToken.findByToken(tokenId)
+        if(!token || token.isExpired() || !token.user) { return null }
+
+        User user = changePassword(token.user, token.user.password, newPassword, confirmPassword, true)
+        if(!user?.hasErrors()) {
+            token.delete(flush: true)
+        }
+        return user
     }
 }

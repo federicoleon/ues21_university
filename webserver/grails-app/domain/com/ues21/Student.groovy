@@ -7,8 +7,6 @@ class Student extends Person implements Serializable {
 
     String fileNumber
 
-    static hasMany = [passwords: UserPassword]
-
     static mapping = {
         tablePerHierarchy false
     }

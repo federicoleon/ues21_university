@@ -47,4 +47,11 @@ abstract class DateUtils {
             return new Date()
         }
     }
+
+    public static Date addMinutesToCurrent(int minutes) {
+        Calendar calendar = new GregorianCalendar()
+        calendar.setTime(new Date())
+        calendar.add(Calendar.MINUTE, minutes)
+        return calendar.getTime()
+    }
 }

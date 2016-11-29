@@ -4,8 +4,9 @@ class UserPassword implements Serializable {
 
     public transient final static int STATUS_ACTIVE = 0
     public transient final static int STATUS_LOCKED = 1
+    public transient final static int STATUS_INACTIVE = 2
 
-    static belongsTo = [person: Person]
+    static belongsTo = [user: User]
 
     Date date = new Date()
     String passwordHash

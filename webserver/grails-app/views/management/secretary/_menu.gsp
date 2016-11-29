@@ -38,8 +38,9 @@
                             </ul>
                         </li>
 
-                        <li><li><g:link controller="secretary" action="browseAbsences">Inasistencias</g:link></li></li>
-                        <li><a href="#">Exámenes</a></li>
+                        <li>
+                            <li><g:link controller="secretary" action="browseAbsences">Inasistencias</g:link></li>
+                        </li>
                     </ul>
                 </li>
                 <li><g:link controller="secretary" action="browseCathedras">Comisiones</g:link></li>
@@ -47,14 +48,11 @@
             </ul>
         </li>
 
-        <li><a  href="#"><i class="icon-camera"></i>${session.person.firstName + " " + session.person.lastName}</a>
+        <li><a  href="#"><i class="icon-camera"></i>${session.user.person.firstName + " " + session.user.person.lastName}</a>
             <ul class="sub-menu">
+                <li><g:link controller="login" action="changePassword">Modificar contraseña</g:link></li>
                 <li><g:link controller="login" action="logout">Cerrar sesión</g:link></li>
             </ul>
         </li>
-        <g:if test="${session.person}">
-            
-            
-        </g:if>
     </ul>
 </nav>

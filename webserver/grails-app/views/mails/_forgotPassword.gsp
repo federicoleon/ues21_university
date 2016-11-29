@@ -6,16 +6,16 @@
             <div id="header">
                 <div id="title">
                     <h1>Universidad Empresarial Siglo 22</h1>
-                    <h2>Su cuenta ha sido bloqueada!</h2>
+                    <h2>Restablecer contraseña</h2>
                 </div>
             </div>
 
             <div id="body">
-                <span>Hola ${firstName}.</span>
+                <span>Hola ${firstName}!</span>
                 <br><br>
-                <span>Se han agotado los intentos de acceso a tu cuenta y, por seguridad, la hemos bloqueado para evitar el acceso de terceros.</span>
+                <span>Hemos recibido una solicitud para recuperar tu contraseña.</span>
                 <br><br>
-                <span>Para recuperar tu cuenta puedes hacer <a href="${recoverURL}">CLICK AQUÍ</a></span>
+                <span>Para establecer una nueva contraseña puedes hacer <a href="${recoverURL}">CLICK AQUÍ</a>.</span>
                 <br><br>
                 <span>Saludos!</span>
                 <br><br>

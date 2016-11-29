@@ -21,6 +21,4 @@ abstract class Person implements Serializable {
         creationDate nullable: false
         lastUpdate nullable: false
     }
-
-    public abstract String getRole()
 }

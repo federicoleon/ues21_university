@@ -5,13 +5,15 @@ import com.ues21.enums.*
 import com.ues21.constants.Constants
 import org.codehaus.groovy.grails.web.context.ServletContextHolder
 
-import org.springframework.security.access.annotation.Secured
+import org.codehaus.groovy.grails.web.json.JSONObject
+import org.codehaus.groovy.grails.web.json.JSONArray
 
 class SecretaryController {
 
     def cathedraService
     def studentService
     def careerService
+    def personService
     def subjectService
     def pdfRenderingService
 
@@ -19,7 +21,6 @@ class SecretaryController {
         init {
             action {
                 Map model = [
-                    careers: careerService.getCareersModelView(),
                     idTypes: IdentificationTypeEnum.values(),
                     phoneTypes: PhoneTypeEnum.values()
                 ]
@@ -34,66 +35,51 @@ class SecretaryController {
 
         processCareerRegistration {
             action {
-                Student student = new Student()
 
-                student.firstName = params.firstName
-                student.lastName = params.lastName
+                JSONObject json = new JSONObject()
 
-                String idNumber = params.idNumber.toString().trim()
-                Identification identification = new Identification()
-                identification.type = params.int("idType")
-                identification.number = idNumber
-                identification.person = student
-                student.identification = identification
+                JSONObject person = new JSONObject()
+                person.put("first_name", params.firstName)
+                person.put("last_name", params.lastName)
+                
+                JSONObject identification = new JSONObject()
+                String idType = IdentificationTypeEnum.byId(params.int("idType"))?.type()
+                identification.put("number", params.idNumber.toString().trim())
+                identification.put("type", idType)
+                person.put("identification", identification)
 
-                student.fileNumber = idNumber
-                student.username = params.idNumber.toString().trim()
-                student.password = StringUtils.getMD5(idNumber)
+                JSONArray phones = new JSONArray()
 
-                Phone phone = new Phone()
-                phone.type = params.int("phoneType")
-                phone.areaCode = params.int("phoneAreaCode")
-                phone.number = params.int("phoneNumber")
-                phone.person = student
-                student.addToPhones(phone)
+                JSONObject phone = new JSONObject()
+                phone.put("type", PhoneTypeEnum.byId(params.int("phoneType")).type())
+                phone.put("area_code", params.int("phoneAreaCode"))
+                phone.put("number", params.int("phoneNumber"))
+                phone.put("company", "")
+                phones.add(phone)
+                person.put("phones", phones)
 
-                Email email = new Email()
-                email.address = params.email
-                email.person = student
-                student.addToEmails(email)
+                JSONArray emails = new JSONArray()
+                
+                JSONObject email = new JSONObject()
+                email.put("address", params.email)
+                emails.add(email)
+                person.put("emails", emails)
 
-                flow.student = student
+                json.put("person_data", person)
 
-                if(!student.validate()) {
+                json.put("file_number", params.idNumber.toString().trim())
+                json.put("username", params.idNumber.toString().trim())
+                json.put("password", params.idNumber.toString().trim())
+                json.put("role", UserRoleEnum.STUDENT.role())
+
+                Person p = personService.createFromGeneric(json)
+
+                if(p.hasErrors()) {
+                    flow.student = p
                     return error()
                 }
-
-                // Register current student:
-                def std = student.save(flush: true, failOnError: true)
-
-                // Check for received careerId:
-                List careerIds = params.list('carreerIds')
-                if(!careerIds) {
-                    return error()
-                }
-
-                careerIds?.each { careerId ->
-                    Career career = Career.get(careerId)
-                    if(!career) {
-                        return error()
-                    }
-                    // If we have the career, then save the relation between student and career:
-                    CareersXStudent cxs = new CareersXStudent()
-                    cxs.career = career
-                    cxs.student = student
-                    if(cxs.validate()) {
-                        cxs.save(flush: true, failOnError: true)
-                    }else{
-                        return error()
-                    }
-                }
-
-                flow.studentId = std.id
+                
+                flow.studentId = ((Student) p).id
             }
             on("success").to("savePDFReport")
             on("error").to("error")

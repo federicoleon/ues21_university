@@ -1,9 +1,10 @@
-
 package com.ues21
 
-class User {
+import com.ues21.utils.StringUtils
 
-	transient springSecurityService
+import com.ues21.enums.UserRoleEnum
+
+class User {
 
 	Person person
 	String username
@@ -12,8 +13,10 @@ class User {
 	boolean accountExpired
 	boolean accountLocked
 	boolean passwordExpired
+	Set passwords = []
+	Set roles = []
 
-	static transients = ['springSecurityService']
+	static hasMany = [passwords: UserPassword, roles: Role]
 
 	static constraints = {
 		username blank: false, unique: true
@@ -21,24 +24,24 @@ class User {
 	}
 
 	static mapping = {
-		password column: '`password`'
+		roles lazy: false
+		person lazy: false
+		passwords lazy: false
 	}
 
-	Set<Role> getAuthorities() {
-		UserRole.findAllByUser(this).collect { it.role }
+	public transient boolean isStudent() {
+		return roles.collect { it.authority == UserRoleEnum.STUDENT.role()}.contains(true)
 	}
 
-	def beforeInsert() {
-		encodePassword()
+	public transient boolean isSecretary() {
+		return roles.collect { it.authority == UserRoleEnum.SECRETARY.role()}.contains(true)
 	}
 
-	def beforeUpdate() {
-		if (isDirty('password')) {
-			encodePassword()
-		}
+	public transient boolean isDirector() {
+		return roles.collect { it.authority == UserRoleEnum.DIRECTOR.role()}.contains(true)
 	}
 
-	protected void encodePassword() {
-		password = springSecurityService?.passwordEncoder ? springSecurityService.encodePassword(password) : password
+	public transient boolean isTeacher() {
+		return roles.collect { it.authority == UserRoleEnum.TEACHER.role()}.contains(true)
 	}
 }
